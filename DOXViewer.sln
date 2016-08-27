@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOXViewer", "DOXViewer.csproj", "{BAECAC37-C23F-4DB1-B48C-8F7D97E265FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOXViewerTests", "..\DOXViewerUnitTests\DOXViewerTests.csproj", "{9FDE25A5-2232-4F27-8FD3-A73C895C4B01}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BAECAC37-C23F-4DB1-B48C-8F7D97E265FD} = {BAECAC37-C23F-4DB1-B48C-8F7D97E265FD}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAECAC37-C23F-4DB1-B48C-8F7D97E265FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAECAC37-C23F-4DB1-B48C-8F7D97E265FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAECAC37-C23F-4DB1-B48C-8F7D97E265FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAECAC37-C23F-4DB1-B48C-8F7D97E265FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FDE25A5-2232-4F27-8FD3-A73C895C4B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FDE25A5-2232-4F27-8FD3-A73C895C4B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FDE25A5-2232-4F27-8FD3-A73C895C4B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FDE25A5-2232-4F27-8FD3-A73C895C4B01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
