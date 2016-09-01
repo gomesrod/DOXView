@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace DOXView.ModelLayout
 {
-    [TestClass]
+	[TestFixture]
     public class LayoutParserTest
     {
         private static string XML_IN =
@@ -22,13 +22,13 @@ namespace DOXView.ModelLayout
 "    </Node>                                                                             " +
 "</DOXViewLayout>                                                                      ";
 
-        [TestMethod]
+        [Test]
         public void InvalidXml()
         {
 
         }
 
-        [TestMethod]
+        [Test]
         public void ParseConfigurationXml()
         {
             LayoutParser parser = new LayoutParser();

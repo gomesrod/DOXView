@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using DOXView.ModelLayout;
 
 namespace DOXView.Model
 {
-    [TestClass]
+    [TestFixture]
     public class ParserTest
     {
         /*
@@ -54,7 +54,7 @@ namespace DOXView.Model
 "	</Block>                                                                                " +
 "</Bill>                                                                                    ";
         
-        [TestMethod]
+        [Test]
         public void SingleOccurenceRootLevelNode()
         {
             Layout layout = new Layout();
@@ -69,7 +69,7 @@ namespace DOXView.Model
             Assert.AreEqual(false, model.Nodes[0].IsError);
         }
 
-        [TestMethod]
+        [Test]
         public void NonExistentNode_NotRequired()
         {
             Layout layout = new Layout();
@@ -82,7 +82,7 @@ namespace DOXView.Model
             Assert.AreEqual(0, model.Nodes.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void NonExistentNode_Required()
         {
             Layout layout = new Layout();
@@ -97,7 +97,7 @@ namespace DOXView.Model
         }
 
 
-        [TestMethod]
+        [Test]
         public void MultipleOccurencesRootLevelNode()
         {
             Layout layout = new Layout();
@@ -114,7 +114,7 @@ namespace DOXView.Model
             
         }
 
-        [TestMethod]
+        [Test]
         public void SingleOccurenceRootLevelNode_WithAttributes()
         {
             Layout layout = new Layout();
@@ -140,7 +140,7 @@ namespace DOXView.Model
             Assert.AreEqual("John Sample", model.Nodes[0].Values[1].Value);
         }
 
-        [TestMethod]
+        [Test]
         public void NonExistentValue_NotRequired()
         {
             Layout layout = new Layout();
@@ -156,7 +156,7 @@ namespace DOXView.Model
             Assert.AreEqual(0, model.Nodes[0].Values.Count);
         }
 
-        [TestMethod]
+        [Test]
         public void NonExistentValue_Required()
         {
             Layout layout = new Layout();
@@ -174,7 +174,7 @@ namespace DOXView.Model
             Assert.AreEqual(true, model.Nodes[0].Values[0].IsError);
         }
 
-        [TestMethod]
+        [Test]
         public void MultipleOccurenceRootLevelNodes_WithAttributes()
         {
             Layout layout = new Layout();
