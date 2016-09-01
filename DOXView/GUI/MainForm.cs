@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DOXViewer.Model;
-using DOXViewer.ModelLayout;
+using DOXView.Model;
+using DOXView.ModelLayout;
 
-namespace DOXViewer.GUI
+namespace DOXView.GUI
 {
     public partial class MainForm : Form
     {
@@ -28,7 +28,7 @@ namespace DOXViewer.GUI
         private void MainForm_Load(object sender, EventArgs e)
         {
             
-            String xmlFile = "D:\\rodrigo\\projects\\DOXViewer\\Sample\\INV0010437370-L-C0.xml";
+            String xmlFile = "D:\\rodrigo\\projects\\DOXView\\Sample\\INV0010437370-L-C0.xml";
 
             Layout layout = new Layout();
 

@@ -1,4 +1,4 @@
-﻿namespace DOXViewer.GUI
+﻿namespace DOXView.GUI
 {
     partial class MainForm
     {

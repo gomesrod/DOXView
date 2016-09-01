@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 /*
- * DOXViewer
+ * DOXView
  * 
  * Domain-oriented XML Viewer
  * 
  * */
-namespace DOXViewer.GUI
+namespace DOXView.GUI
 {
     static class Program
     {

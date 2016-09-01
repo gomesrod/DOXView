@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DOXViewer.Model
+namespace DOXView.Model
 {
     public class XmlModel
     {

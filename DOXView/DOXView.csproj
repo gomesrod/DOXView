@@ -7,8 +7,8 @@
     <ProjectGuid>{BAECAC37-C23F-4DB1-B48C-8F7D97E265FD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DOXViewer</RootNamespace>
-    <AssemblyName>DOXViewer</AssemblyName>
+    <RootNamespace>DOXView</RootNamespace>
+    <AssemblyName>DOXView</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -67,9 +67,11 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Program.cs" />
+    <Compile Include="ModelLayout\LayoutParser.cs" />
     <Compile Include="ModelLayout\LayoutValue.cs" />
     <Compile Include="ModelLayout\LayoutNode.cs" />
     <Compile Include="ModelLayout\Layout.cs" />
+    <Compile Include="ModelLayout\ParserException.cs" />
     <Compile Include="Model\ModelParser.cs" />
     <Compile Include="Model\XmlModelValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

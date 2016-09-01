@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using DOXViewer.ModelLayout;
+using DOXView.ModelLayout;
 
-namespace DOXViewer.Model
+namespace DOXView.Model
 {
     public class ModelParser
     {
@@ -56,7 +56,10 @@ namespace DOXViewer.Model
                     foreach (XmlNode xmlValue in foundXmlValues)
                     {
                         string textValue = xmlValue.Value != null ? xmlValue.Value : xmlValue.InnerText;
-                        newNode.Values.Add(new XmlModelValue(layoutValue.Description, textValue));
+                        newNode.Values.Add(new XmlModelValue(layoutValue.Description, textValue, false));
+                    }
+                    if (foundXmlValues.Count == 0 && layoutValue.Required) {
+                        newNode.Values.Add(new XmlModelValue(layoutValue.Description, null, true));
                     }
                 }
             }
