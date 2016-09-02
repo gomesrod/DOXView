@@ -30,7 +30,7 @@ namespace DOXView.GUI
             
             String xmlFile = "D:\\rodrigo\\projects\\DOXView\\Sample\\INV0010437370-L-C0.xml";
 
-            Layout layout = new Layout();
+			Layout layout = new Layout("Test Layout", "/thisPathShouldExistInXml", new List<LayoutNode>());
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model;

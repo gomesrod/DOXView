@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using DOXView.ModelLayout;
 
@@ -57,8 +58,9 @@ namespace DOXView.Model
         [Test]
         public void SingleOccurenceRootLevelNode()
         {
-            Layout layout = new Layout();
-            layout.Nodes.Add(new LayoutNode("CustomerData", "/Bill/Block/Customer", true));
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+			layout.Nodes.Add(new LayoutNode("CustomerData", "/Bill/Block/Customer", true, 
+					new List<LayoutNode>(), new List<LayoutValue>()));
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -72,8 +74,9 @@ namespace DOXView.Model
         [Test]
         public void NonExistentNode_NotRequired()
         {
-            Layout layout = new Layout();
-            layout.Nodes.Add(new LayoutNode("NonexistentField", "/This/Path/Is/Fake", false));
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+            layout.Nodes.Add(new LayoutNode("NonexistentField", "/This/Path/Is/Fake", false,
+				new List<LayoutNode>(), new List<LayoutValue>()));
             
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -85,8 +88,9 @@ namespace DOXView.Model
         [Test]
         public void NonExistentNode_Required()
         {
-            Layout layout = new Layout();
-            layout.Nodes.Add(new LayoutNode("NonexistentField", "/This/Path/Is/Fake", true));
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+			layout.Nodes.Add(new LayoutNode("NonexistentField", "/This/Path/Is/Fake", true, 
+				new List<LayoutNode>(), new List<LayoutValue>()));
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -100,8 +104,9 @@ namespace DOXView.Model
         [Test]
         public void MultipleOccurencesRootLevelNode()
         {
-            Layout layout = new Layout();
-            layout.Nodes.Add(new LayoutNode("AddressPart", "/Bill/Block/Customer/AddressPart", true));
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+			layout.Nodes.Add(new LayoutNode("AddressPart", "/Bill/Block/Customer/AddressPart", true, 
+				new List<LayoutNode>(), new List<LayoutValue>()));
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -117,8 +122,9 @@ namespace DOXView.Model
         [Test]
         public void SingleOccurenceRootLevelNode_WithAttributes()
         {
-            Layout layout = new Layout();
-            LayoutNode rootNode = new LayoutNode("CustomerData", "/Bill/Block/Customer", true);
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+			LayoutNode rootNode = new LayoutNode("CustomerData", "/Bill/Block/Customer", true, 
+				new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("Customer ID", "@Id"));
             rootNode.Values.Add(new LayoutValue("Customer Name", "Name"));            
             layout.Nodes.Add(rootNode);
@@ -143,8 +149,9 @@ namespace DOXView.Model
         [Test]
         public void NonExistentValue_NotRequired()
         {
-            Layout layout = new Layout();
-            LayoutNode rootNode = new LayoutNode("CustomerData", "/Bill/Block/Customer", true);
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+			LayoutNode rootNode = new LayoutNode("CustomerData", "/Bill/Block/Customer", true, 
+				new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("Missing", "@NotAValue"));
             layout.Nodes.Add(rootNode);
 
@@ -159,8 +166,9 @@ namespace DOXView.Model
         [Test]
         public void NonExistentValue_Required()
         {
-            Layout layout = new Layout();
-            LayoutNode rootNode = new LayoutNode("CustomerData", "/Bill/Block/Customer", true);
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+			LayoutNode rootNode = new LayoutNode("CustomerData", "/Bill/Block/Customer", true, 
+				new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("Missing", "@NotAValue", true));
             layout.Nodes.Add(rootNode);
 
@@ -177,8 +185,9 @@ namespace DOXView.Model
         [Test]
         public void MultipleOccurenceRootLevelNodes_WithAttributes()
         {
-            Layout layout = new Layout();
-            LayoutNode rootNode = new LayoutNode("Charge", "/Bill/Block/ChargesSummary/Charge", true);
+			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
+			LayoutNode rootNode = new LayoutNode("Charge", "/Bill/Block/ChargesSummary/Charge", true, 
+				new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("Charge Description", "Description"));
             layout.Nodes.Add(rootNode);
 

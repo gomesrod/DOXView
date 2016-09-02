@@ -6,15 +6,16 @@ using System.Text;
 namespace DOXView.ModelLayout
 {
     public class Layout
-    {               
-        private List<LayoutNode> _nodes = new List<LayoutNode>();
+    {       
+		public string Description { get; private set;}
+		public string EvaluationXPath { get; private set;}
+		public List<LayoutNode> Nodes { get; private set;}
 
-        public IList<LayoutNode> Nodes
-        {
-            get
-            {
-                return _nodes;
-            }
-        }
+		public Layout(string desc, string evalxpath, List<LayoutNode> nodes)
+		{
+			Description = desc;
+			EvaluationXPath = evalxpath;
+			Nodes = nodes;
+		}
     }
 }

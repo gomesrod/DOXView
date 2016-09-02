@@ -7,34 +7,20 @@ namespace DOXView.ModelLayout
 {
     public class LayoutNode
     {
-        private List<LayoutNode> childNodes = new List<LayoutNode>();
-        private List<LayoutValue> values = new List<LayoutValue>();
+		public List<LayoutNode> ChildNodes{ get; private set;}
+		public List<LayoutValue> Values { get; private set;}
 
         public String Description { get; private set; }
         public String Xpath { get; private set; }
         public Boolean Required { get; private set; }
 
-        public LayoutNode(string desc, string path, Boolean req)
+		public LayoutNode (string desc, string path, Boolean req, List<LayoutNode> children, List<LayoutValue> vals)
         {
             Description = desc;
             Xpath = path;
             Required = req;
-        }
-
-        public List<LayoutNode> Nodes
-        {
-            get
-            {
-                return childNodes;
-            }
-        }
-
-        public List<LayoutValue> Values
-        {
-            get
-            {
-                return values;
-            }
+			ChildNodes = children;
+			Values = vals;
         }
     }
 }
