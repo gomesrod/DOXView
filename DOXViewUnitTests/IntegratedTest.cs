@@ -37,7 +37,20 @@ namespace DOXViewUnitTests
 		private void validateCustInfoNode(XmlModelNode custInfoNode) {
             Assert.AreEqual("Invoice Information", custInfoNode.Description);
             Assert.IsFalse(custInfoNode.IsError);
-            Assert.AreEqual(6, custInfoNode.Values.Count);
+
+            Assert.AreEqual(7, custInfoNode.Values.Count);
+
+            XmlModelValue custId = custInfoNode.Values[0];
+            Assert.AreEqual("Customer ID", custId.Description);
+            Assert.AreEqual("99912331", custId.Value);
+            Assert.IsFalse(custId.IsError);
+
+            // Jumping to the 6th value (country), which was not found and is
+            // expected to be marked as error
+            XmlModelValue country = custInfoNode.Values[5];
+            Assert.AreEqual("Country", country.Description);
+            Assert.IsNull(country.Value);
+            Assert.IsTrue(country.IsError);
 		}
 	}
 }

@@ -15,6 +15,7 @@
 	<!-- A simple group of information, represented by a XML Node
 		pointed by the XPath /Bill/Block/Customer -->
 	<Node Description="Invoice Information" XPath="/Bill/Customer" Required="True">
+    <Value Description="Customer ID" XPath="@Id" Required="True" />
 		<!-- 'Required' attribute is optional. Nodes and Values are required by default -->
 		<Value Description="Customer Name" XPath="Name" />
 		<Value Description="Address Street" XPath="AddressPart[@part='street']" />
