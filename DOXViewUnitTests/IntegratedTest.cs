@@ -35,7 +35,9 @@ namespace DOXViewUnitTests
 		}
 
 		private void validateCustInfoNode(XmlModelNode custInfoNode) {
-			Assert.AreEqual(5, custInfoNode.Values.Count);
+            Assert.AreEqual("Invoice Information", custInfoNode.Description);
+            Assert.IsFalse(custInfoNode.IsError);
+            Assert.AreEqual(6, custInfoNode.Values.Count);
 		}
 	}
 }

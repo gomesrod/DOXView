@@ -7,45 +7,18 @@ namespace DOXView.Model
 {
     public class XmlModelNode
     {
-        private String name;
-        private Boolean error;
-        private List<XmlModelNode> childNodes = new List<XmlModelNode>();
-        private List<XmlModelValue> values = new List<XmlModelValue>();
+        public string Description { get; private set; }
+        public Boolean IsError { get; private set; }
 
-        public XmlModelNode(String n, Boolean er)
+        public List<XmlModelNode> ChildNodes { get; private set; }
+        public List<XmlModelValue> Values { get; private set; }
+
+        public XmlModelNode(String desc, Boolean er, List<XmlModelNode> children, List<XmlModelValue> vals)
         {
-            name = n;
-            error = er;
-        }
-
-        public String Name 
-        {
-            get
-            {
-                return name;
-            }
-        }
-
-        public List<XmlModelNode> Nodes
-        {
-            get
-            {
-                return childNodes;
-            }
-        }
-
-        public List<XmlModelValue> Values{
-            get{
-                return values;
-            }
-        }
-
-        public Boolean IsError
-        {
-            get
-            {
-                return error;
-            }
+            Description = desc;
+            IsError = er;
+            ChildNodes = children;
+            Values = vals;
         }
     }
 }

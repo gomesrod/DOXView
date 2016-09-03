@@ -1,14 +1,15 @@
-<Bill>                                                                                      
-	<Block>                                                                                  
+<Bill>                                                                                                                                                       
 		<Customer Id="99912331">                                                             
 			<Name>John Sample</Name>                                                         
 			<AddressPart part="street">Telecom Customers Street</AddressPart>                
 			<AddressPart part="number">9123</AddressPart>                                    
 			<AddressPart part="zip">15121241</AddressPart>                                   
-		</Customer>                                                                          
-	</Block>                                                                                 
-	<Block>                                                                                  
-		<ChargesSummary group="1">                                                           
+		</Customer>
+    
+    <!-- Charges group 1 = telecom services.
+      Group 2 = non-telecom services
+      Group 3 = other charges (not present in this instance) -->
+		<ChargesSummary group="1">
 			<Charge>                                                                         
 				<Description>Your Monthly Plan</Description>                                 
 				<Value>99.99</Value>                                                         
@@ -17,10 +18,14 @@
 				<Description>Out-of-bundle calls</Description>                               
 				<Value>10.63</Value>                                                         
 			</Charge>                                                                        
-			<ChargeTotal>110.62</ChargeTotal>                                                
-		</ChargesSummary>                                                                    
-	</Block>	                                                                             
-	<Block>                                                                                  
+		</ChargesSummary>
+    <ChargesSummary group="2">
+      <Charge>
+        <Description>Ringtones download</Description>
+        <Value>0.99</Value>
+      </Charge>
+    </ChargesSummary>
+    <ChargeTotal>111.61</ChargeTotal>
 		<Calls>                                                                              
 			<Call type="local" destnumber="118171621" seconds="530" value="0.00">            
 				<Tax Value="0.00"></Tax>                                                     
@@ -37,6 +42,5 @@
 			<Call type="local" destnumber="114123498" seconds="1059" value="0.00">           
 				<Tax Value="0.00"></Tax>                                                     
 			</Call>                                                                          
-		</Calls>                                                                             
-	</Block>                                                                                 
+		</Calls>                                                                                                                                   
 </Bill>                                                                                    

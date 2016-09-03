@@ -10,18 +10,27 @@
 		If the XPath here can be found in the XML, then the program
 		can try to use this layout
 	 -->
-	<EvaluationXPath>/Bill/Block</EvaluationXPath>
+	<EvaluationXPath>/Bill</EvaluationXPath>
 
 	<!-- A simple group of information, represented by a XML Node
 		pointed by the XPath /Bill/Block/Customer -->
-	<Node Description="Customer Information" XPath="/Bill/Block/Customer" Required="True">
+	<Node Description="Invoice Information" XPath="/Bill/Customer" Required="True">
 		<!-- 'Required' attribute is optional. Nodes and Values are required by default -->
-		<Value Description="Name" XPath="Name" />
+		<Value Description="Customer Name" XPath="Name" />
 		<Value Description="Address Street" XPath="AddressPart[@part='street']" />
 		<Value Description="Address Number" XPath="AddressPart[@part='number']" />
 		<Value Description="Zip Code" XPath="AddressPart[@part='zip']" />
 		<!-- The information below is intentionally non-existent in the XML.
 		The GUI will highlight it as a source of error due to the information that was not found -->
 		<Value Description="Country" XPath="Country" Required="True" />
+
+    <!-- Value don't need to be inside the "Node" tag. If some text/attribute from
+    other parts of the XML makes sense inside this node, you can reference it -->
+    <Value Description="Total Invoice Amount" XPath="/Bill/ChargeTotal" Required="True" />
 	</Node>
+  
+  <!-- Mode complex XPath features, such as filters, can be used as well -->
+  <Node Description="Telecom Services Summary" XPath="/Bill/ChargesSummary[@group='1']">
+    
+  </Node>
 </DOXViewLayout>

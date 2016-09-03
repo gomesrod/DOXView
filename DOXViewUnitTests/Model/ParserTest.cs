@@ -67,7 +67,7 @@ namespace DOXView.Model
 
             Assert.AreEqual(1, model.Nodes.Count);
             
-            Assert.AreEqual("CustomerData", model.Nodes[0].Name);
+            Assert.AreEqual("CustomerData", model.Nodes[0].Description);
             Assert.AreEqual(false, model.Nodes[0].IsError);
         }
 
@@ -96,7 +96,7 @@ namespace DOXView.Model
             XmlModel model = parser.parseXmlString(XML_INPUT);
 
             // If the field is required, it comes to the output with an error status
-            Assert.AreEqual("NonexistentField", model.Nodes[0].Name);
+            Assert.AreEqual("NonexistentField", model.Nodes[0].Description);
             Assert.AreEqual(true, model.Nodes[0].IsError);
         }
 
@@ -113,9 +113,9 @@ namespace DOXView.Model
 
             Assert.AreEqual(3, model.Nodes.Count);
 
-            Assert.AreEqual("AddressPart", model.Nodes[0].Name);
-            Assert.AreEqual("AddressPart", model.Nodes[1].Name);
-            Assert.AreEqual("AddressPart", model.Nodes[2].Name);
+            Assert.AreEqual("AddressPart", model.Nodes[0].Description);
+            Assert.AreEqual("AddressPart", model.Nodes[1].Description);
+            Assert.AreEqual("AddressPart", model.Nodes[2].Description);
             
         }
 
@@ -134,7 +134,7 @@ namespace DOXView.Model
 
             Assert.AreEqual(1, model.Nodes.Count);
 
-            Assert.AreEqual("CustomerData", model.Nodes[0].Name);
+            Assert.AreEqual("CustomerData", model.Nodes[0].Description);
             Assert.AreEqual(false, model.Nodes[0].IsError);
 
             Assert.AreEqual(2, model.Nodes[0].Values.Count);
@@ -196,14 +196,14 @@ namespace DOXView.Model
 
             Assert.AreEqual(2, model.Nodes.Count);
 
-            Assert.AreEqual("Charge", model.Nodes[0].Name);
+            Assert.AreEqual("Charge", model.Nodes[0].Description);
             Assert.AreEqual(false, model.Nodes[0].IsError);
 
             Assert.AreEqual(1, model.Nodes[0].Values.Count);
             Assert.AreEqual("Charge Description", model.Nodes[0].Values[0].Description);
             Assert.AreEqual("Your Monthly Plan", model.Nodes[0].Values[0].Value);
 
-            Assert.AreEqual("Charge", model.Nodes[1].Name);
+            Assert.AreEqual("Charge", model.Nodes[1].Description);
             Assert.AreEqual(false, model.Nodes[1].IsError);
 
             Assert.AreEqual(1, model.Nodes[1].Values.Count);

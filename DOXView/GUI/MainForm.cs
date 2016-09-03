@@ -44,7 +44,7 @@ namespace DOXView.GUI
             }
             
             foreach(XmlModelNode modelNode in model.Nodes) {
-                documentTreeView.Nodes.Add(modelNode.Name);
+                documentTreeView.Nodes.Add(modelNode.Description);
             }
         }
 

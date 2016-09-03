@@ -42,12 +42,12 @@ namespace DOXView.Model
             XmlNodeList foundXmlNodes = doc.SelectNodes(layout.Nodes[0].Xpath);
 
             if (foundXmlNodes.Count == 0 && layout.Nodes[0].Required) {
-                currentModelNodeList.Add(new XmlModelNode(layout.Nodes[0].Description, true));
+                currentModelNodeList.Add(new XmlModelNode(layout.Nodes[0].Description, true, new List<XmlModelNode>(), new List<XmlModelValue>()));
             }
 
             foreach(XmlNode xmlNode in foundXmlNodes) 
             {
-                XmlModelNode newNode = new XmlModelNode(layout.Nodes[0].Description, false);
+                XmlModelNode newNode = new XmlModelNode(layout.Nodes[0].Description, false, new List<XmlModelNode>(), new List<XmlModelValue>());
                 currentModelNodeList.Add(newNode);
 
                 foreach (LayoutValue layoutValue in layout.Nodes[0].Values)
