@@ -120,7 +120,7 @@ namespace DOXView.Model
         }
 
         [Test]
-        public void SingleOccurenceRootLevelNode_WithAttributes()
+        public void SingleOccurenceRootLevelNode_WithValues()
         {
 			Layout layout = new Layout("Test Layout", "/Bill", new List<LayoutNode>());
 			LayoutNode rootNode = new LayoutNode("CustomerData", "/Bill/Block/Customer", true, 

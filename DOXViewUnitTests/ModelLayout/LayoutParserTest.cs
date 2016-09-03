@@ -25,9 +25,18 @@ namespace DOXView.ModelLayout
 "</DOXViewLayout>                                                                      ";
 
         [Test]
-        public void InvalidXml()
+        public void InvalidXml_malformed()
         {
+			String xmlIn = "<invalid XML></not_closing_the_right_tag>";
 
+			LayoutParser parser = new LayoutParser();
+
+			try {
+				parser.parseXmlString (xmlIn);
+				Assert.Fail("A Parse Exception was expected here");
+			} catch (ParserException pe) {
+				Assert.IsTrue(pe.Message.Contains("invalid XML"), "Checking Exception message");
+			}
         }
 
         [Test]
@@ -56,15 +65,30 @@ namespace DOXView.ModelLayout
             Assert.IsFalse(rootNode2.Required);
 			Assert.AreEqual (0, rootNode2.ChildNodes.Count); // Zero child nodes
 
-			//RootNode2 values
-			Assert.AreEqual(2, rootNode2.Values.Count);
-			LayoutValue val1 = rootNode2.Values[0];
+			//RootNode1 values
+			Assert.AreEqual(2, rootNode1.Values.Count);
+			LayoutValue val1 = rootNode1.Values[0];
+			Assert.AreEqual ("RootNodeAttribute1", val1.Description);
+			Assert.AreEqual ("@attrib1", val1.XPath);
+			Assert.AreEqual (false, val1.Required);
+
+			LayoutValue val2 = rootNode1.Values[1];
+			Assert.AreEqual ("RootNodeSomeInnerValue", val2.Description);
+			Assert.AreEqual ("childTag/another", val2.XPath);
+			Assert.AreEqual (true, val2.Required); // Not specified, use default
 
 			//RootNode1 nested node
 			LayoutNode nested = rootNode1.ChildNodes[0];
 			Assert.AreEqual("NestedNode", nested.Description);
 			Assert.AreEqual("nestedUnderRoot", nested.Xpath);
 			Assert.IsTrue(nested.Required); // Not specified, use default
+
+			// Nested Node Values
+			Assert.AreEqual(1, nested.Values.Count);
+			LayoutValue val3 = nested.Values[0];
+			Assert.AreEqual ("NestedAttribute", val3.Description);
+			Assert.AreEqual ("@nestedAttrib", val3.XPath);
+			Assert.AreEqual (true, val3.Required); // Not specified, use default
         }
     }
 }

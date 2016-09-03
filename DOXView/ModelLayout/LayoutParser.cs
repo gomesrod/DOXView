@@ -11,14 +11,22 @@ namespace DOXView.ModelLayout
         public Layout parseXmlString(string xmlString)
         {
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xmlString);
+			try {
+            	doc.LoadXml(xmlString);
+			} catch (XmlException xe) {
+				throw new ParserException ("The layout configuration contains invalid XML. Error: " + xe.Message, xe);
+			}
             return buildLayout(doc);
         }
         
         public Layout parseXmlFile(string xmlPath)
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(xmlPath);
+			try {
+				doc.Load(xmlPath);
+			} catch (XmlException xe) {
+				throw new ParserException ("The layout configuration contains invalid XML. Error: " + xe.Message, xe);
+			}
             return buildLayout(doc);
         }
 
@@ -28,13 +36,13 @@ namespace DOXView.ModelLayout
 			string description = currentNode.SelectSingleNode ("LayoutDescription").InnerText;
 			string evaluationXPath = currentNode.SelectSingleNode ("EvaluationXPath").InnerText;
 
-			List<LayoutNode> children = getChildNodes (currentNode);
+			List<LayoutNode> children = extractChildNodes (currentNode);
 
 			Layout resultLayout = new Layout (description, evaluationXPath, children);
 			return resultLayout;
         }
 
-		private List<LayoutNode> getChildNodes (XmlNode currentNode)
+		private List<LayoutNode> extractChildNodes (XmlNode currentNode)
 		{
 			List<LayoutNode> resultList = new List<LayoutNode>();
 			foreach (XmlNode node in currentNode.SelectNodes("Node"))
@@ -51,9 +59,8 @@ namespace DOXView.ModelLayout
 					required = true;
 				}
 
-				List<LayoutNode> children = getChildNodes (node);
-
-				List<LayoutValue> values = null;
+				List<LayoutNode> children = extractChildNodes (node);
+				List<LayoutValue> values = extractValues (node);
 
 				LayoutNode layoutNode = new LayoutNode (desc, xpath, required, children, values);
 
@@ -61,6 +68,28 @@ namespace DOXView.ModelLayout
 			}
 			return resultList;
 		}
-			
+
+		private List<LayoutValue> extractValues (XmlNode node) 
+		{
+			List<LayoutValue> values = new List<LayoutValue>();
+			foreach (XmlNode valueNode in node.SelectNodes("Value")) 
+			{
+				string valueDesc = valueNode.SelectSingleNode ("@Description").Value;
+				string valueXpath = valueNode.SelectSingleNode ("@XPath").Value;
+
+				XmlNode valueRequiredNode = valueNode.SelectSingleNode ("@Required");
+				Boolean valueRequired;
+				if (valueRequiredNode != null) {
+					valueRequired = Boolean.Parse (valueRequiredNode.Value);
+				} else {
+					// Use default value
+					valueRequired = true;
+				}
+
+				values.Add (new LayoutValue(valueDesc, valueXpath, valueRequired));
+			}	
+
+			return values;
+		}
     }
 }

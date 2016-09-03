@@ -1,0 +1,27 @@
+<!--
+	A sample Domain-Oriented-XML layout.
+	It presents a friendly view of the XML file SampleData.xml
+ -->
+<DOXViewLayout>
+	<!-- This layout's description -->
+	<LayoutDescription>Sample Telecom Bill</LayoutDescription>
+
+	<!-- This is used to check if this layout applies to a given XML
+		If the XPath here can be found in the XML, then the program
+		can try to use this layout
+	 -->
+	<EvaluationXPath>/Bill/Block</EvaluationXPath>
+
+	<!-- A simple group of information, represented by a XML Node
+		pointed by the XPath /Bill/Block/Customer -->
+	<Node Description="Customer Information" XPath="/Bill/Block/Customer" Required="True">
+		<!-- 'Required' attribute is optional. Nodes and Values are required by default -->
+		<Value Description="Name" XPath="Name" />
+		<Value Description="Address Street" XPath="AddressPart[@part='street']" />
+		<Value Description="Address Number" XPath="AddressPart[@part='number']" />
+		<Value Description="Zip Code" XPath="AddressPart[@part='zip']" />
+		<!-- The information below is intentionally non-existent in the XML.
+		The GUI will highlight it as a source of error due to the information that was not found -->
+		<Value Description="Country" XPath="Country" Required="True" />
+	</Node>
+</DOXViewLayout>

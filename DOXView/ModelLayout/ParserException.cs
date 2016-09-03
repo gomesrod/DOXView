@@ -5,8 +5,14 @@ using System.Text;
 
 namespace DOXView.ModelLayout
 {
-    class ParserException : Exception
+    public class ParserException : Exception
     {
+		public ParserException(String msg) : base(msg)
+		{
+		}
 
+		public ParserException(String msg, Exception cause) : base(msg, cause)
+		{
+		}
     }
 }
