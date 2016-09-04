@@ -20,7 +20,7 @@ namespace DOXView.ModelLayout
 "        <Value Description='RootNodeAttribute1' XPath='@attrib1' Required='False' />      " +
 "        <Value Description='RootNodeSomeInnerValue' XPath='childTag/another' />           " +
 "    </Node>                                                                             " +
-"    <Node Description='RootNode2' XPath='/node2' Required='False'>                      " +
+"    <Node Description='RootNode2' XPath='/node2' Required='False' CustomDescriptionXPath='@SomeRelevantAttribute'> " +
 "    </Node>                                                                             " +
 "</DOXViewLayout>                                                                      ";
 
@@ -55,6 +55,7 @@ namespace DOXView.ModelLayout
             LayoutNode rootNode1 = layout.Nodes[0];
             Assert.AreEqual("RootNode1", rootNode1.Description);
 			Assert.AreEqual("/node1", rootNode1.Xpath);
+            Assert.IsNull(rootNode1.CustomDescriptionXPath);
             Assert.IsTrue(rootNode1.Required);
 			Assert.AreEqual (1, rootNode1.ChildNodes.Count); // One child node
 
@@ -62,6 +63,7 @@ namespace DOXView.ModelLayout
             LayoutNode rootNode2 = layout.Nodes[1];
             Assert.AreEqual("RootNode2", rootNode2.Description);
 			Assert.AreEqual("/node2", rootNode2.Xpath);
+            Assert.AreEqual("@SomeRelevantAttribute", rootNode2.CustomDescriptionXPath);
             Assert.IsFalse(rootNode2.Required);
 			Assert.AreEqual (0, rootNode2.ChildNodes.Count); // Zero child nodes
 

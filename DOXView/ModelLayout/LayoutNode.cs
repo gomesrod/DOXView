@@ -13,12 +13,14 @@ namespace DOXView.ModelLayout
         public String Description { get; private set; }
         public String Xpath { get; private set; }
         public Boolean Required { get; private set; }
+        public String CustomDescriptionXPath { get; private set; }
 
-		public LayoutNode (string desc, string path, Boolean req, List<LayoutNode> children, List<LayoutValue> vals)
+		public LayoutNode (string desc, string path, Boolean req, string customDescPath, List<LayoutNode> children, List<LayoutValue> vals)
         {
             Description = desc;
             Xpath = path;
             Required = req;
+            CustomDescriptionXPath = customDescPath;
 			ChildNodes = children;
 			Values = vals;
         }

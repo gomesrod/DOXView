@@ -46,7 +46,7 @@ namespace DOXView.Model
         public void SingleOccurenceRootLevelNode()
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
-			layout.Nodes.Add(new LayoutNode("Owner Information", "/Library/Owner", true, 
+			layout.Nodes.Add(new LayoutNode("Owner Information", "/Library/Owner", true, null,
 					new List<LayoutNode>(), new List<LayoutValue>()));
 
             ModelParser parser = new ModelParser(layout);
@@ -62,7 +62,7 @@ namespace DOXView.Model
         public void NonExistentNode_NotRequired()
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
-            layout.Nodes.Add(new LayoutNode("NonexistentField", "/This/Path/Is/Fake", false,
+            layout.Nodes.Add(new LayoutNode("NonexistentField", "/This/Path/Is/Fake", false, null,
 				new List<LayoutNode>(), new List<LayoutValue>()));
             
             ModelParser parser = new ModelParser(layout);
@@ -77,7 +77,7 @@ namespace DOXView.Model
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
             
-            LayoutNode node = new LayoutNode("NonexistentField", "/This/Path/Is/Fake", true,
+            LayoutNode node = new LayoutNode("NonexistentField", "/This/Path/Is/Fake", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
             LayoutValue someValue = new LayoutValue("Some Value", "@does_not_exist_as_well");
             node.Values.Add(someValue);
@@ -100,7 +100,7 @@ namespace DOXView.Model
         public void MultipleOccurencesRootLevelNode()
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
-			layout.Nodes.Add(new LayoutNode("CD", "/Library/Disks/CD", true, 
+			layout.Nodes.Add(new LayoutNode("CD", "/Library/Disks/CD", true, null,
 				new List<LayoutNode>(), new List<LayoutValue>()));
 
             ModelParser parser = new ModelParser(layout);
@@ -113,10 +113,26 @@ namespace DOXView.Model
         }
 
         [Test]
+        public void MultipleOccurencesRootLevelNode_WithCustomDescriptions()
+        {
+            Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
+            layout.Nodes.Add(new LayoutNode("CD", "/Library/Disks/CD", true, "Title",
+                new List<LayoutNode>(), new List<LayoutValue>()));
+
+            ModelParser parser = new ModelParser(layout);
+            XmlModel model = parser.parseXmlString(XML_INPUT);
+
+            Assert.AreEqual(2, model.Nodes.Count);
+
+            Assert.AreEqual("CD [Thriller]", model.Nodes[0].Description);
+            Assert.AreEqual("CD [Nevermind]", model.Nodes[1].Description);
+        }
+
+        [Test]
         public void NonExistentValue_NotRequired()
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
-			LayoutNode rootNode = new LayoutNode("CustomerData", "/Library/Owner", true, 
+			LayoutNode rootNode = new LayoutNode("CustomerData", "/Library/Owner", true, null,
 				new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("Missing", "@NotAValue", false));
             layout.Nodes.Add(rootNode);
@@ -133,7 +149,7 @@ namespace DOXView.Model
         public void NonExistentValue_Required()
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
-            LayoutNode rootNode = new LayoutNode("CustomerData", "/Library/Owner", true,
+            LayoutNode rootNode = new LayoutNode("CustomerData", "/Library/Owner", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("Missing", "@NotAValue", true));
             layout.Nodes.Add(rootNode);
@@ -153,7 +169,7 @@ namespace DOXView.Model
         public void NodeWithValue_valueIsXmlAttribute()
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
-            LayoutNode rootNode = new LayoutNode("Library Owner", "/Library/Owner", true,
+            LayoutNode rootNode = new LayoutNode("Library Owner", "/Library/Owner", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("Name", "@Name"));
             layout.Nodes.Add(rootNode);
@@ -175,7 +191,7 @@ namespace DOXView.Model
         public void NodesWithValues_valueIsTagText()
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
-			LayoutNode rootNode = new LayoutNode("CD Info", "/Library/Disks/CD", true, 
+			LayoutNode rootNode = new LayoutNode("CD Info", "/Library/Disks/CD", true, null,
 				new List<LayoutNode>(), new List<LayoutValue>());
             rootNode.Values.Add(new LayoutValue("CD Gender", "Gender"));
             layout.Nodes.Add(rootNode);
@@ -207,9 +223,9 @@ namespace DOXView.Model
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 
-            LayoutNode node1 = new LayoutNode("CD", "/Library/Disks/CD", true,
+            LayoutNode node1 = new LayoutNode("CD", "/Library/Disks/CD", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
-            LayoutNode node2 = new LayoutNode("Book", "/Library/Books/Book", true,
+            LayoutNode node2 = new LayoutNode("Book", "/Library/Books/Book", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
 
             layout.Nodes.Add(node1);
@@ -233,11 +249,11 @@ namespace DOXView.Model
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 
-            LayoutNode layoutRoot = new LayoutNode("Library Root", "/Library", true,
+            LayoutNode layoutRoot = new LayoutNode("Library Root", "/Library", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
-            LayoutNode disksLayoutNode = new LayoutNode("My Disks", "Disks", true,
+            LayoutNode disksLayoutNode = new LayoutNode("My Disks", "Disks", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
-            LayoutNode cdLayoutNode = new LayoutNode("CD", "CD", true,
+            LayoutNode cdLayoutNode = new LayoutNode("CD", "CD", true, null,
                 new List<LayoutNode>(), new List<LayoutValue>());
 
             LayoutValue artistLayoutValue = new LayoutValue("The Artist", "Artist");

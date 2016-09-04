@@ -32,7 +32,30 @@ namespace DOXViewUnitTests
 			Assert.AreEqual (2, model.Nodes.Count);
 
 			validateCustInfoNode (model.Nodes[0]);
+            validateTelecomServicesSummary(model.Nodes[1]);
 		}
+
+        private void validateTelecomServicesSummary(XmlModelNode servicesSummaryNode)
+        {
+            Assert.AreEqual("Telecom Services Summary", servicesSummaryNode.Description);
+            Assert.AreEqual(2, servicesSummaryNode.ChildNodes.Count);
+
+            XmlModelNode charge1 = servicesSummaryNode.ChildNodes[0];
+            Assert.AreEqual("Charge [Your Monthly Plan]", charge1.Description);
+            Assert.IsFalse(charge1.IsError);
+
+            Assert.AreEqual(1, charge1.Values.Count);
+            Assert.AreEqual("Amount", charge1.Values[0].Description);
+            Assert.AreEqual("99.99", charge1.Values[0].Value);
+
+            XmlModelNode charge2 = servicesSummaryNode.ChildNodes[1];
+            Assert.AreEqual("Charge [Out-of-bundle calls]", charge2.Description);
+            Assert.IsFalse(charge2.IsError);
+
+            Assert.AreEqual(1, charge2.Values.Count);
+            Assert.AreEqual("Amount", charge2.Values[0].Description);
+            Assert.AreEqual("10.63", charge2.Values[0].Value);
+        }
 
 		private void validateCustInfoNode(XmlModelNode custInfoNode) {
             Assert.AreEqual("Invoice Information", custInfoNode.Description);

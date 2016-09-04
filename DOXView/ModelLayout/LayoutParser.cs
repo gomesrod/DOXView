@@ -51,18 +51,16 @@ namespace DOXView.ModelLayout
 				string xpath = node.SelectSingleNode ("@XPath").Value;
 
 				XmlNode requiredNode = node.SelectSingleNode ("@Required");
-				Boolean required;
-				if (requiredNode != null) {
-					required = Boolean.Parse (requiredNode.Value);
-				} else {
-					// Use default value
-					required = true;
-				}
+                // Use default value TRUE when not present
+				Boolean required = requiredNode != null ? Boolean.Parse (requiredNode.Value) : true;
+
+                XmlNode custDescAttrNode = node.SelectSingleNode("@CustomDescriptionXPath");
+                string custDescAttr = custDescAttrNode != null ? custDescAttrNode.Value : null;
 
 				List<LayoutNode> children = extractChildNodes (node);
 				List<LayoutValue> values = extractValues (node);
 
-				LayoutNode layoutNode = new LayoutNode (desc, xpath, required, children, values);
+                LayoutNode layoutNode = new LayoutNode(desc, xpath, required, custDescAttr, children, values);
 
 				resultList.Add (layoutNode);
 			}

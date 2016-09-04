@@ -32,6 +32,10 @@
   
   <!-- Mode complex XPath features, such as filters, can be used as well -->
   <Node Description="Telecom Services Summary" XPath="/Bill/ChargesSummary[@group='1']">
-    
+    <!-- If we use the CustomDescriptionXPath attribute, for every occurence of the node
+        the value of this path will be appended to the description -->
+    <Node Description="Charge" XPath="Charge" CustomDescriptionXPath="Description">
+      <Value Description="Amount" XPath="Value" />
+    </Node>
   </Node>
 </DOXViewLayout>

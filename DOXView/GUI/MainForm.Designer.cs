@@ -33,10 +33,13 @@
             this.openXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
             this.documentTreeView = new System.Windows.Forms.TreeView();
+            this.dataGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
+            this.SplitContainer.Panel2.SuspendLayout();
             this.SplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -60,7 +63,7 @@
             // openXMLToolStripMenuItem
             // 
             this.openXMLToolStripMenuItem.Name = "openXMLToolStripMenuItem";
-            this.openXMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openXMLToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.openXMLToolStripMenuItem.Text = "Open XML...";
             this.openXMLToolStripMenuItem.Click += new System.EventHandler(this.openXMLToolStripMenuItem_Click);
             // 
@@ -77,6 +80,10 @@
             // 
             this.SplitContainer.Panel1.AutoScroll = true;
             this.SplitContainer.Panel1.Controls.Add(this.documentTreeView);
+            // 
+            // SplitContainer.Panel2
+            // 
+            this.SplitContainer.Panel2.Controls.Add(this.dataGridView);
             this.SplitContainer.Size = new System.Drawing.Size(649, 440);
             this.SplitContainer.SplitterDistance = 216;
             this.SplitContainer.TabIndex = 1;
@@ -89,6 +96,19 @@
             this.documentTreeView.Name = "documentTreeView";
             this.documentTreeView.Size = new System.Drawing.Size(212, 436);
             this.documentTreeView.TabIndex = 0;
+            this.documentTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.documentTreeView_AfterSelect);
+            // 
+            // dataGridView
+            // 
+            this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.ColumnHeadersVisible = false;
+            this.dataGridView.Location = new System.Drawing.Point(-2, -2);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.Size = new System.Drawing.Size(429, 435);
+            this.dataGridView.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -104,8 +124,10 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.SplitContainer.Panel1.ResumeLayout(false);
+            this.SplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
             this.SplitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -118,6 +140,7 @@
         private System.Windows.Forms.ToolStripMenuItem openXMLToolStripMenuItem;
         private System.Windows.Forms.SplitContainer SplitContainer;
         private System.Windows.Forms.TreeView documentTreeView;
+        private System.Windows.Forms.DataGridView dataGridView;
 
 
     }

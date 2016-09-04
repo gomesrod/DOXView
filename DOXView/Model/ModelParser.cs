@@ -69,7 +69,22 @@ namespace DOXView.Model
                     childNodes.AddRange(childrenOfThisNode);
                 }
 
-                XmlModelNode newNode = new XmlModelNode(layoutNode.Description, false, childNodes, values);
+                string nodeDescription = layoutNode.Description;
+                if (layoutNode.CustomDescriptionXPath != null)
+                {
+                    XmlNode customDescriptionNode = xmlNode.SelectSingleNode(layoutNode.CustomDescriptionXPath);
+                    if (customDescriptionNode != null) {
+                        nodeDescription = nodeDescription + " ["
+                            + (customDescriptionNode.Value != null ? customDescriptionNode.Value : customDescriptionNode.InnerText)
+                            + "]";
+                    }
+                    else
+                    {
+                        nodeDescription = nodeDescription + " [" + layoutNode.CustomDescriptionXPath + "]";
+                    }
+                }
+
+                XmlModelNode newNode = new XmlModelNode(nodeDescription, false, childNodes, values);
                 result.Add(newNode);
             }          
 

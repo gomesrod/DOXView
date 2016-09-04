@@ -43,12 +43,28 @@ namespace DOXView.GUI
                 MessageBox.Show(this, ex.Message + "|" + ex.StackTrace);
                 return;
             }
-            
-            foreach(XmlModelNode modelNode in model.Nodes) {
+
+            addXmlNodesToTree(model.Nodes, documentTreeView.Nodes);
+        }
+
+        private void addXmlNodesToTree(IList<XmlModelNode> modelNodes, TreeNodeCollection treeNodeCollection)
+        {
+            foreach (XmlModelNode modelNode in modelNodes)
+            {
                 TreeNode treeNode = new TreeNode(modelNode.Description);
-                treeNode.Tag = modelNode;
-                documentTreeView.Nodes.Add(treeNode);
+                treeNode.Tag = modelNode;               
+
+                // Proceed adding child nodes
+                addXmlNodesToTree(modelNode.ChildNodes, treeNode.Nodes);
+
+                treeNodeCollection.Add(treeNode);
             }
+        }
+
+        private void documentTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            XmlModelNode modelNode = (XmlModelNode)e.Node.Tag;
+            dataGridView.DataSource = modelNode.Values;
         }
 
     }
