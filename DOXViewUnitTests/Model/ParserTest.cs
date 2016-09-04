@@ -35,6 +35,10 @@ namespace DOXView.Model
 "         <Author>Miguel de Cervantes</Author>" +
 "         <Title>Dom Quixote</Title>" +
 "      </Book>" +
+"      <Book>" +
+"         <Author>George Orwell</Author>" +
+"         <Title>1984</Title>" +
+"      </Book>" +
 "	</Books>" +
 "</Library>";
         
@@ -144,8 +148,31 @@ namespace DOXView.Model
             Assert.AreEqual(true, model.Nodes[0].Values[0].IsError);
         }
 
+
         [Test]
-        public void NodesWithValues()
+        public void NodeWithValue_valueIsXmlAttribute()
+        {
+            Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
+            LayoutNode rootNode = new LayoutNode("Library Owner", "/Library/Owner", true,
+                new List<LayoutNode>(), new List<LayoutValue>());
+            rootNode.Values.Add(new LayoutValue("Name", "@Name"));
+            layout.Nodes.Add(rootNode);
+
+            ModelParser parser = new ModelParser(layout);
+            XmlModel model = parser.parseXmlString(XML_INPUT);
+
+            Assert.AreEqual(1, model.Nodes.Count);
+
+            Assert.AreEqual("Library Owner", model.Nodes[0].Description);
+            Assert.AreEqual(false, model.Nodes[0].IsError);
+
+            Assert.AreEqual(1, model.Nodes[0].Values.Count);
+            Assert.AreEqual("Name", model.Nodes[0].Values[0].Description);
+            Assert.AreEqual("Mike The Art Collector", model.Nodes[0].Values[0].Value);
+        }
+        
+        [Test]
+        public void NodesWithValues_valueIsTagText()
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 			LayoutNode rootNode = new LayoutNode("CD Info", "/Library/Disks/CD", true, 
@@ -175,5 +202,79 @@ namespace DOXView.Model
             Assert.AreEqual("Rock", model.Nodes[1].Values[0].Value);
         }
 
+        [Test]
+        public void SequenceOfNodes()
+        {
+            Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
+
+            LayoutNode node1 = new LayoutNode("CD", "/Library/Disks/CD", true,
+                new List<LayoutNode>(), new List<LayoutValue>());
+            LayoutNode node2 = new LayoutNode("Book", "/Library/Books/Book", true,
+                new List<LayoutNode>(), new List<LayoutValue>());
+
+            layout.Nodes.Add(node1);
+            layout.Nodes.Add(node2);
+            
+            ModelParser parser = new ModelParser(layout);
+            XmlModel model = parser.parseXmlString(XML_INPUT);
+
+            Assert.AreEqual(5, model.Nodes.Count);
+
+            Assert.AreEqual("CD", model.Nodes[0].Description);
+            Assert.AreEqual("CD", model.Nodes[1].Description);
+            Assert.AreEqual("Book", model.Nodes[2].Description);
+            Assert.AreEqual("Book", model.Nodes[3].Description);
+            Assert.AreEqual("Book", model.Nodes[4].Description);
+        }
+
+
+        [Test]
+        public void NestedNodesAndValues()
+        {
+            Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
+
+            LayoutNode layoutRoot = new LayoutNode("Library Root", "/Library", true,
+                new List<LayoutNode>(), new List<LayoutValue>());
+            LayoutNode disksLayoutNode = new LayoutNode("My Disks", "Disks", true,
+                new List<LayoutNode>(), new List<LayoutValue>());
+            LayoutNode cdLayoutNode = new LayoutNode("CD", "CD", true,
+                new List<LayoutNode>(), new List<LayoutValue>());
+
+            LayoutValue artistLayoutValue = new LayoutValue("The Artist", "Artist");
+
+            layout.Nodes.Add(layoutRoot);
+            layoutRoot.ChildNodes.Add(disksLayoutNode);
+            disksLayoutNode.ChildNodes.Add(cdLayoutNode);
+            cdLayoutNode.Values.Add(artistLayoutValue);
+
+            ModelParser parser = new ModelParser(layout);
+            XmlModel model = parser.parseXmlString(XML_INPUT);
+
+            // Validate root level node
+            Assert.AreEqual(1, model.Nodes.Count, "Checking root level node");
+            XmlModelNode libraryRoot = model.Nodes[0];
+            Assert.AreEqual("Library Root", libraryRoot.Description);
+
+            // Second level node
+            Assert.AreEqual(1, libraryRoot.ChildNodes.Count, "Checking second level node");
+            XmlModelNode disksLevel = libraryRoot.ChildNodes[0];
+            Assert.AreEqual("My Disks", disksLevel.Description);
+
+            // Third level node (two instances of CD)
+            Assert.AreEqual(2, disksLevel.ChildNodes.Count);
+            XmlModelNode cd1 = disksLevel.ChildNodes[0];
+            XmlModelNode cd2 = disksLevel.ChildNodes[1];
+            Assert.AreEqual("CD", cd1.Description);
+            Assert.AreEqual("CD", cd2.Description);
+
+            // Values under the third level node
+            Assert.AreEqual(1, cd1.Values.Count);
+            Assert.AreEqual("The Artist", cd1.Values[0].Description);
+            Assert.AreEqual("Michael Jackson", cd1.Values[0].Value);
+
+            Assert.AreEqual(1, cd2.Values.Count);
+            Assert.AreEqual("The Artist", cd2.Values[0].Description);
+            Assert.AreEqual("Nirvana", cd2.Values[0].Value);
+        }
     }
 }

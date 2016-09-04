@@ -35,36 +35,64 @@ namespace DOXView.Model
 
         private XmlModel createModel(XmlDocument doc)
         {
-            List<XmlModelNode> modelNodes = new List<XmlModelNode>();
+            List<XmlModelNode> resultModelNodes = new List<XmlModelNode>();
 
-            List<XmlModelNode> currentModelNodeList = modelNodes;
-
-            XmlNodeList foundXmlNodes = doc.SelectNodes(layout.Nodes[0].Xpath);
-
-            if (foundXmlNodes.Count == 0 && layout.Nodes[0].Required) {
-                currentModelNodeList.Add(new XmlModelNode(layout.Nodes[0].Description, true, new List<XmlModelNode>(), new List<XmlModelValue>()));
-            }
-
-            foreach(XmlNode xmlNode in foundXmlNodes) 
+            foreach (LayoutNode layoutNode in layout.Nodes)
             {
-                XmlModelNode newNode = new XmlModelNode(layout.Nodes[0].Description, false, new List<XmlModelNode>(), new List<XmlModelValue>());
-                currentModelNodeList.Add(newNode);
-
-                foreach (LayoutValue layoutValue in layout.Nodes[0].Values)
-                {
-                    XmlNodeList foundXmlValues = xmlNode.SelectNodes(layoutValue.XPath);
-                    foreach (XmlNode xmlValue in foundXmlValues)
-                    {
-                        string textValue = xmlValue.Value != null ? xmlValue.Value : xmlValue.InnerText;
-                        newNode.Values.Add(new XmlModelValue(layoutValue.Description, textValue, false));
-                    }
-                    if (foundXmlValues.Count == 0 && layoutValue.Required) {
-                        newNode.Values.Add(new XmlModelValue(layoutValue.Description, null, true));
-                    }
-                }
+                List<XmlModelNode> matchesForTheCurrentLayoutNode = extractXmlModelNodes(layoutNode, doc);
+                resultModelNodes.AddRange(matchesForTheCurrentLayoutNode);
             }
             
-            return new XmlModel(modelNodes);
+            return new XmlModel(resultModelNodes);
+        }
+
+        private List<XmlModelNode> extractXmlModelNodes(LayoutNode layoutNode, XmlNode docOrCurrentNode)
+        {
+            List<XmlModelNode> result = new List<XmlModelNode>();
+
+            XmlNodeList foundXmlNodes = docOrCurrentNode.SelectNodes(layoutNode.Xpath);
+
+            if (foundXmlNodes.Count == 0 && layoutNode.Required)
+            {
+                result.Add(new XmlModelNode(layoutNode.Description, true, new List<XmlModelNode>(), new List<XmlModelValue>()));
+            }
+
+            foreach (XmlNode xmlNode in foundXmlNodes)
+            {
+                List<XmlModelValue> values = extractValues(layoutNode.Values, xmlNode);
+
+                // Call recursively to add the children of this layout node
+                List<XmlModelNode> childNodes = new List<XmlModelNode>();
+                foreach (LayoutNode layoutChildNode in layoutNode.ChildNodes)
+                {
+                    List<XmlModelNode> childrenOfThisNode = extractXmlModelNodes(layoutChildNode, xmlNode);
+                    childNodes.AddRange(childrenOfThisNode);
+                }
+
+                XmlModelNode newNode = new XmlModelNode(layoutNode.Description, false, childNodes, values);
+                result.Add(newNode);
+            }          
+
+            return result;
+        }
+
+        private static List<XmlModelValue> extractValues(List<LayoutValue> layoutValues, XmlNode xmlNode)
+        {
+            List<XmlModelValue> values = new List<XmlModelValue>();
+            foreach (LayoutValue layoutValue in layoutValues)
+            {
+                XmlNodeList foundXmlValues = xmlNode.SelectNodes(layoutValue.XPath);
+                foreach (XmlNode xmlValue in foundXmlValues)
+                {
+                    string textValue = xmlValue.Value != null ? xmlValue.Value : xmlValue.InnerText;
+                    values.Add(new XmlModelValue(layoutValue.Description, textValue, false));
+                }
+                if (foundXmlValues.Count == 0 && layoutValue.Required)
+                {
+                    values.Add(new XmlModelValue(layoutValue.Description, null, true));
+                }
+            }
+            return values;
         }
     }
 }

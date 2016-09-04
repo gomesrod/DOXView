@@ -27,24 +27,27 @@ namespace DOXView.GUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
-            String xmlFile = "D:\\rodrigo\\projects\\DOXView\\Sample\\INV0010437370-L-C0.xml";
+            LayoutParser layoutParser = new LayoutParser();
 
-			Layout layout = new Layout("Test Layout", "/thisPathShouldExistInXml", new List<LayoutNode>());
+            // The IDE is supposed to run this program from [DoxViewTests directory]/bin/[Debug|Release]
+            // We go back three levels to find the sample files in the root of the project
+            Layout layout = layoutParser.parseXmlFile("../../../DemoFiles/SampleLayout.xml");
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model;
 
             try
             {
-                model = parser.parseXmlFile(xmlFile);
+                model = parser.parseXmlFile("../../../DemoFiles/SampleData.xml");
             } catch (Exception ex) {
                 MessageBox.Show(this, ex.Message + "|" + ex.StackTrace);
                 return;
             }
             
             foreach(XmlModelNode modelNode in model.Nodes) {
-                documentTreeView.Nodes.Add(modelNode.Description);
+                TreeNode treeNode = new TreeNode(modelNode.Description);
+                treeNode.Tag = modelNode;
+                documentTreeView.Nodes.Add(treeNode);
             }
         }
 

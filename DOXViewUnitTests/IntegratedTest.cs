@@ -29,7 +29,7 @@ namespace DOXViewUnitTests
 		{
 			XmlModel model = parser.parseXmlFile("../../../DemoFiles/SampleData.xml");
 
-			Assert.AreEqual (1, model.Nodes.Count);
+			Assert.AreEqual (2, model.Nodes.Count);
 
 			validateCustInfoNode (model.Nodes[0]);
 		}
