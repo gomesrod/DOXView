@@ -33,13 +33,13 @@
             this.openXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
             this.documentTreeView = new System.Windows.Forms.TreeView();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.valuesGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
             this.SplitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valuesGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -57,13 +57,13 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openXMLToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openXMLToolStripMenuItem
             // 
             this.openXMLToolStripMenuItem.Name = "openXMLToolStripMenuItem";
-            this.openXMLToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.openXMLToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.openXMLToolStripMenuItem.Text = "Open XML...";
             this.openXMLToolStripMenuItem.Click += new System.EventHandler(this.openXMLToolStripMenuItem_Click);
             // 
@@ -83,9 +83,10 @@
             // 
             // SplitContainer.Panel2
             // 
-            this.SplitContainer.Panel2.Controls.Add(this.dataGridView);
+            this.SplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.SplitContainer.Panel2.Controls.Add(this.valuesGridView);
             this.SplitContainer.Size = new System.Drawing.Size(649, 440);
-            this.SplitContainer.SplitterDistance = 216;
+            this.SplitContainer.SplitterDistance = 149;
             this.SplitContainer.TabIndex = 1;
             this.SplitContainer.TabStop = false;
             // 
@@ -94,21 +95,27 @@
             this.documentTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.documentTreeView.Location = new System.Drawing.Point(0, 0);
             this.documentTreeView.Name = "documentTreeView";
-            this.documentTreeView.Size = new System.Drawing.Size(212, 436);
+            this.documentTreeView.Size = new System.Drawing.Size(145, 436);
             this.documentTreeView.TabIndex = 0;
             this.documentTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.documentTreeView_AfterSelect);
             // 
-            // dataGridView
+            // valuesGridView
             // 
-            this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.valuesGridView.AllowUserToAddRows = false;
+            this.valuesGridView.AllowUserToDeleteRows = false;
+            this.valuesGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.ColumnHeadersVisible = false;
-            this.dataGridView.Location = new System.Drawing.Point(-2, -2);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(429, 435);
-            this.dataGridView.TabIndex = 0;
+            this.valuesGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.valuesGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.valuesGridView.ColumnHeadersVisible = false;
+            this.valuesGridView.Location = new System.Drawing.Point(-2, -2);
+            this.valuesGridView.Name = "valuesGridView";
+            this.valuesGridView.ReadOnly = true;
+            this.valuesGridView.RowHeadersVisible = false;
+            this.valuesGridView.Size = new System.Drawing.Size(496, 67);
+            this.valuesGridView.TabIndex = 0;
+            this.valuesGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.valuesGridView_CellFormatting);
+            this.valuesGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.valuesGridView_DataBindingComplete);
             // 
             // MainForm
             // 
@@ -119,7 +126,8 @@
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "DOXView";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -127,7 +135,7 @@
             this.SplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
             this.SplitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valuesGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,7 +148,7 @@
         private System.Windows.Forms.ToolStripMenuItem openXMLToolStripMenuItem;
         private System.Windows.Forms.SplitContainer SplitContainer;
         private System.Windows.Forms.TreeView documentTreeView;
-        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.DataGridView valuesGridView;
 
 
     }

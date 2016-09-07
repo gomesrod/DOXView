@@ -14,6 +14,8 @@ namespace DOXView.GUI
 {
     public partial class MainForm : Form
     {
+        private List<XmlModelValue> currentValuesList;
+
         public MainForm()
         {
             InitializeComponent();
@@ -27,6 +29,10 @@ namespace DOXView.GUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            prepareValuesGridView();
+
+            // * * * Temporary * * * 
+            // * * * A file will not be open during startup
             LayoutParser layoutParser = new LayoutParser();
 
             // The IDE is supposed to run this program from [DoxViewTests directory]/bin/[Debug|Release]
@@ -45,6 +51,33 @@ namespace DOXView.GUI
             }
 
             addXmlNodesToTree(model.Nodes, documentTreeView.Nodes);
+            documentTreeView.SelectedNode = documentTreeView.Nodes[0];
+        }
+
+        private void prepareValuesGridView()
+        {
+
+            //create the column programatically
+            DataGridViewCell defaultValueCell = new DataGridViewTextBoxCell();
+            DataGridViewTextBoxColumn colDescription = new DataGridViewTextBoxColumn()
+            {
+                CellTemplate = defaultValueCell,
+                Name = "ValueDescription",
+                HeaderText = "Description",
+                DataPropertyName = "Description" // Tell the column which property of FileName it should use
+            };
+
+            DataGridViewTextBoxColumn colValue = new DataGridViewTextBoxColumn()
+            {
+                CellTemplate = defaultValueCell,
+                Name = "ValueContents",
+                HeaderText = "Value",
+                DataPropertyName = "Value" // Tell the column which property of FileName it should use
+            };
+
+            valuesGridView.AutoGenerateColumns = false;
+            valuesGridView.Columns.Add(colDescription);
+            valuesGridView.Columns.Add(colValue);
         }
 
         private void addXmlNodesToTree(IList<XmlModelNode> modelNodes, TreeNodeCollection treeNodeCollection)
@@ -64,8 +97,31 @@ namespace DOXView.GUI
         private void documentTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             XmlModelNode modelNode = (XmlModelNode)e.Node.Tag;
-            dataGridView.DataSource = modelNode.Values;
+            currentValuesList = modelNode.Values;
+            valuesGridView.DataSource = currentValuesList;
         }
+
+        private void valuesGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (currentValuesList == null) return;
+            if (e.ColumnIndex == 0) return; // Format only the second column (value)
+
+            if (currentValuesList[e.RowIndex].IsError)
+            {
+                e.CellStyle.BackColor = Color.Red;
+            }
+        }
+
+        private void valuesGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            // Resize component to fit all the rows
+            // (with some extra pixels to avoid the scroll bar)
+            int rowsHeight = valuesGridView.Rows.GetRowsHeight(DataGridViewElementStates.None) + 5;
+
+            Size newSize = new Size(valuesGridView.ClientSize.Width, rowsHeight);
+            valuesGridView.ClientSize = newSize;
+        }
+
 
     }
 }
