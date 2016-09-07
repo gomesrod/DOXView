@@ -13,12 +13,16 @@ namespace DOXView.Model
         public List<XmlModelNode> ChildNodes { get; private set; }
         public List<XmlModelValue> Values { get; private set; }
 
-        public XmlModelNode(String desc, Boolean er, List<XmlModelNode> children, List<XmlModelValue> vals)
+        public List<XmlModelDataTable> DataTables { get; private set; }
+
+        public XmlModelNode(String desc, Boolean er, List<XmlModelNode> children,
+                List<XmlModelValue> vals, List<XmlModelDataTable> dataTables)
         {
             Description = desc;
             IsError = er;
             ChildNodes = children;
             Values = vals;
+            DataTables = dataTables;
         }
     }
 }

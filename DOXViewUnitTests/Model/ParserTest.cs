@@ -47,7 +47,7 @@ namespace DOXView.Model
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 			layout.Nodes.Add(new LayoutNode("Owner Information", "/Library/Owner", true, null,
-					new List<LayoutNode>(), new List<LayoutValue>()));
+                    new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>()));
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -63,7 +63,7 @@ namespace DOXView.Model
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
             layout.Nodes.Add(new LayoutNode("NonexistentField", "/This/Path/Is/Fake", false, null,
-				new List<LayoutNode>(), new List<LayoutValue>()));
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>()));
             
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -78,7 +78,7 @@ namespace DOXView.Model
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
             
             LayoutNode node = new LayoutNode("NonexistentField", "/This/Path/Is/Fake", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             LayoutValue someValue = new LayoutValue("Some Value", "@does_not_exist_as_well");
             node.Values.Add(someValue);
 
@@ -92,7 +92,9 @@ namespace DOXView.Model
             Assert.AreEqual(true, model.Nodes[0].IsError);
 
             // The value is not inserted
-            Assert.AreEqual(0, model.Nodes[0].Values.Count);
+            Assert.IsNull(model.Nodes[0].ChildNodes);
+            Assert.IsNull(model.Nodes[0].DataTables);
+            Assert.IsNull(model.Nodes[0].Values);
         }
 
 
@@ -101,7 +103,7 @@ namespace DOXView.Model
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 			layout.Nodes.Add(new LayoutNode("CD", "/Library/Disks/CD", true, null,
-				new List<LayoutNode>(), new List<LayoutValue>()));
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>()));
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -117,7 +119,7 @@ namespace DOXView.Model
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
             layout.Nodes.Add(new LayoutNode("CD", "/Library/Disks/CD", true, "Title",
-                new List<LayoutNode>(), new List<LayoutValue>()));
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>()));
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);
@@ -133,7 +135,7 @@ namespace DOXView.Model
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 			LayoutNode rootNode = new LayoutNode("CustomerData", "/Library/Owner", true, null,
-				new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             rootNode.Values.Add(new LayoutValue("Missing", "@NotAValue", false));
             layout.Nodes.Add(rootNode);
 
@@ -150,7 +152,7 @@ namespace DOXView.Model
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
             LayoutNode rootNode = new LayoutNode("CustomerData", "/Library/Owner", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             rootNode.Values.Add(new LayoutValue("Missing", "@NotAValue", true));
             layout.Nodes.Add(rootNode);
 
@@ -170,7 +172,7 @@ namespace DOXView.Model
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
             LayoutNode rootNode = new LayoutNode("Library Owner", "/Library/Owner", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             rootNode.Values.Add(new LayoutValue("Name", "@Name"));
             layout.Nodes.Add(rootNode);
 
@@ -192,7 +194,7 @@ namespace DOXView.Model
         {
 			Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 			LayoutNode rootNode = new LayoutNode("CD Info", "/Library/Disks/CD", true, null,
-				new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             rootNode.Values.Add(new LayoutValue("CD Gender", "Gender"));
             layout.Nodes.Add(rootNode);
 
@@ -224,9 +226,9 @@ namespace DOXView.Model
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 
             LayoutNode node1 = new LayoutNode("CD", "/Library/Disks/CD", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             LayoutNode node2 = new LayoutNode("Book", "/Library/Books/Book", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
 
             layout.Nodes.Add(node1);
             layout.Nodes.Add(node2);
@@ -250,11 +252,11 @@ namespace DOXView.Model
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 
             LayoutNode layoutRoot = new LayoutNode("Library Root", "/Library", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             LayoutNode disksLayoutNode = new LayoutNode("My Disks", "Disks", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
             LayoutNode cdLayoutNode = new LayoutNode("CD", "CD", true, null,
-                new List<LayoutNode>(), new List<LayoutValue>());
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
 
             LayoutValue artistLayoutValue = new LayoutValue("The Artist", "Artist");
 
@@ -291,6 +293,42 @@ namespace DOXView.Model
             Assert.AreEqual(1, cd2.Values.Count);
             Assert.AreEqual("The Artist", cd2.Values[0].Description);
             Assert.AreEqual("Nirvana", cd2.Values[0].Value);
+        }
+
+        [Test]
+        public void DataTable()
+        {
+            Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
+
+            LayoutDataTable layoutdataTable = new LayoutDataTable("Book List", "Book", new List<LayoutValue>());
+            layoutdataTable.Values.Add(new LayoutValue("The Author", "Author"));
+            layoutdataTable.Values.Add(new LayoutValue("The Title", "Title"));
+
+            List<LayoutDataTable> dataTables = new List<LayoutDataTable>();
+            dataTables.Add(layoutdataTable);
+
+            LayoutNode node = new LayoutNode("Books", "/Library/Books", true, null, 
+                new List<LayoutNode>(), new List<LayoutValue>(), dataTables);
+
+            ModelParser parser = new ModelParser(layout);
+            XmlModel model = parser.parseXmlString(XML_INPUT);
+
+            Assert.AreEqual(1, model.Nodes.Count);
+            Assert.AreEqual(1, model.Nodes[0].DataTables.Count);
+
+            XmlModelDataTable dataTable = model.Nodes[0].DataTables[0];
+
+            Assert.AreEqual("Book List", dataTable.Title);
+            Assert.AreEqual(3, dataTable.Records.Count);
+
+            Assert.AreEqual("Bram Stoker", dataTable.Records[0]["The Author"]);
+            Assert.AreEqual("Dracula", dataTable.Records[0]["The Title"]);
+
+            Assert.AreEqual("Miguel de Cervantes", dataTable.Records[1]["The Author"]);
+            Assert.AreEqual("Dom Quixote", dataTable.Records[1]["The Title"]);
+
+            Assert.AreEqual("George Orwell", dataTable.Records[2]["The Author"]);
+            Assert.AreEqual("1984", dataTable.Records[2]["The Title"]);
         }
     }
 }

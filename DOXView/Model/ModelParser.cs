@@ -54,12 +54,13 @@ namespace DOXView.Model
 
             if (foundXmlNodes.Count == 0 && layoutNode.Required)
             {
-                result.Add(new XmlModelNode(layoutNode.Description, true, new List<XmlModelNode>(), new List<XmlModelValue>()));
+                result.Add(new XmlModelNode(layoutNode.Description, true, null, null, null));
             }
 
             foreach (XmlNode xmlNode in foundXmlNodes)
             {
                 List<XmlModelValue> values = extractValues(layoutNode.Values, xmlNode);
+                List<XmlModelDataTable> dataTables = extractDataTables(layoutNode.DataTables, xmlNode);
 
                 // Call recursively to add the children of this layout node
                 List<XmlModelNode> childNodes = new List<XmlModelNode>();
@@ -84,11 +85,30 @@ namespace DOXView.Model
                     }
                 }
 
-                XmlModelNode newNode = new XmlModelNode(nodeDescription, false, childNodes, values);
+                XmlModelNode newNode = new XmlModelNode(nodeDescription, false, childNodes, values, dataTables);
                 result.Add(newNode);
             }          
 
             return result;
+        }
+
+        private List<XmlModelDataTable> extractDataTables(List<LayoutDataTable> layoutDataTables, XmlNode xmlNode)
+        {
+            List<XmlModelDataTable> dataTables = new List<XmlModelDataTable>();
+
+            foreach (LayoutDataTable layoutdataTable in layoutDataTables)
+            {
+                List<Dictionary<string, string>> records = new List<Dictionary<string, string>>();
+
+                foreach (XmlNode xmlDataTable in xmlNode.SelectNodes(layoutdataTable.RecordXPath))
+                {
+                    Dictionary<string, string> record = new Dictionary<string, string>();
+                }
+
+                XmlModelDataTable dataTable = new XmlModelDataTable(layoutdataTable.Title, records);
+            }
+
+            return dataTables;
         }
 
         private static List<XmlModelValue> extractValues(List<LayoutValue> layoutValues, XmlNode xmlNode)

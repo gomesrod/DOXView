@@ -21,6 +21,10 @@ namespace DOXView.ModelLayout
 "        <Value Description='RootNodeSomeInnerValue' XPath='childTag/another' />           " +
 "    </Node>                                                                             " +
 "    <Node Description='RootNode2' XPath='/node2' Required='False' CustomDescriptionXPath='@SomeRelevantAttribute'> " +
+"        <LayoutDataTable Title='A List Of Values' RecordXPath='repeatingTag'>" +
+"             <Column Name='Column 1' ValueXPath='@column1' />" +
+"             <Column Name='Column 2' ValueXPath='@column2' />" +
+"        </LayoutDataTable>" +
 "    </Node>                                                                             " +
 "</DOXViewLayout>                                                                      ";
 
@@ -59,14 +63,6 @@ namespace DOXView.ModelLayout
             Assert.IsTrue(rootNode1.Required);
 			Assert.AreEqual (1, rootNode1.ChildNodes.Count); // One child node
 
-            //RootNode2 attributes
-            LayoutNode rootNode2 = layout.Nodes[1];
-            Assert.AreEqual("RootNode2", rootNode2.Description);
-			Assert.AreEqual("/node2", rootNode2.Xpath);
-            Assert.AreEqual("@SomeRelevantAttribute", rootNode2.CustomDescriptionXPath);
-            Assert.IsFalse(rootNode2.Required);
-			Assert.AreEqual (0, rootNode2.ChildNodes.Count); // Zero child nodes
-
 			//RootNode1 values
 			Assert.AreEqual(2, rootNode1.Values.Count);
 			LayoutValue val1 = rootNode1.Values[0];
@@ -91,6 +87,30 @@ namespace DOXView.ModelLayout
 			Assert.AreEqual ("NestedAttribute", val3.Description);
 			Assert.AreEqual ("@nestedAttrib", val3.XPath);
 			Assert.AreEqual (true, val3.Required); // Not specified, use default
+            
+            //RootNode2 attributes
+            LayoutNode rootNode2 = layout.Nodes[1];
+            Assert.AreEqual("RootNode2", rootNode2.Description);
+            Assert.AreEqual("/node2", rootNode2.Xpath);
+            Assert.AreEqual("@SomeRelevantAttribute", rootNode2.CustomDescriptionXPath);
+            Assert.IsFalse(rootNode2.Required);
+            Assert.AreEqual(0, rootNode2.ChildNodes.Count); // Zero child nodes
+
+            //LayoutDataTable inside RootNode2
+            List<LayoutDataTable> dataTables = rootNode2.DataTables;
+            Assert.AreEqual(1, dataTables.Count);
+            Assert.AreEqual("A List Of Values", dataTables[0].Title);
+            Assert.AreEqual("repeatingTag", dataTables[0].RecordXPath);
+
+            Assert.AreEqual(2, dataTables[0].Columns.Count);
+
+            LayoutDataTable.Column dataTableV1 = dataTables[0].Columns[0];
+            Assert.AreEqual("Column 1", dataTableV1.Description);
+            Assert.AreEqual("@column1", dataTableV1.XPath);
+
+            LayoutDataTable.Column dataTableV2 = dataTables[0].Columns[1];
+            Assert.AreEqual("Column 2", dataTableV2.Description);
+            Assert.AreEqual("@column2", dataTableV2.XPath);
         }
     }
 }
