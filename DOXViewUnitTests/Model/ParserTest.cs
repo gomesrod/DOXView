@@ -300,15 +300,16 @@ namespace DOXView.Model
         {
             Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
 
-            LayoutDataTable layoutdataTable = new LayoutDataTable("Book List", "Book", new List<LayoutValue>());
-            layoutdataTable.Values.Add(new LayoutValue("The Author", "Author"));
-            layoutdataTable.Values.Add(new LayoutValue("The Title", "Title"));
+			LayoutDataTable layoutdataTable = new LayoutDataTable("Book List", "Book", new List<LayoutDataTable.Column>());
+			layoutdataTable.Columns.Add(new LayoutDataTable.Column("The Author", "Author"));
+			layoutdataTable.Columns.Add(new LayoutDataTable.Column("The Title", "Title"));
 
             List<LayoutDataTable> dataTables = new List<LayoutDataTable>();
             dataTables.Add(layoutdataTable);
 
             LayoutNode node = new LayoutNode("Books", "/Library/Books", true, null, 
                 new List<LayoutNode>(), new List<LayoutValue>(), dataTables);
+			layout.Nodes.Add (node);
 
             ModelParser parser = new ModelParser(layout);
             XmlModel model = parser.parseXmlString(XML_INPUT);

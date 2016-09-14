@@ -30,12 +30,29 @@
     <Value Description="Total Invoice Amount" XPath="/Bill/ChargeTotal" Required="True" />
 	</Node>
   
-  <!-- Mode complex XPath features, such as filters, can be used as well -->
+  <!-- More complex XPath features, such as filters, can be used as well -->
   <Node Description="Telecom Services Summary" XPath="/Bill/ChargesSummary[@group='1']">
     <!-- If we use the CustomDescriptionXPath attribute, for every occurence of the node
         the value of this path will be appended to the description -->
     <Node Description="Charge" XPath="Charge" CustomDescriptionXPath="Description">
       <Value Description="Amount" XPath="Value" />
     </Node>
+  </Node>
+
+  <!-- In the section below we use DataTable elements to display tabular data 
+   -->
+  <Node Description="Calls" XPath="/Bill/Calls">
+  	<DataTable Title="Local Calls" RecordXPath="Call[@type='local']">
+  		<Column Name="Dest Number" ValueXPath="@destnumber" />
+  		<Column Name="Duration" ValueXPath="@seconds" />
+  		<Column Name="Price" ValueXPath="@value" />
+  		<Column Name="Tax" ValueXPath="./Tax" />
+  	</DataTable>
+  	<DataTable Title="Long-Distance Calls" RecordXPath="Call[@type='long-distance']">
+  		<Column Name="Dest Number" ValueXPath="@destnumber" />
+  		<Column Name="Duration" ValueXPath="@seconds" />
+  		<Column Name="Price" ValueXPath="@value" />
+  		<Column Name="Tax" ValueXPath="./Tax" />
+  	</DataTable>
   </Node>
 </DOXViewLayout>

@@ -71,17 +71,30 @@ namespace DOXView.ModelLayout
         private List<LayoutDataTable> extractDataTables(XmlNode node)
         {
             List<LayoutDataTable> dataTables = new List<LayoutDataTable>();
-            foreach(XmlNode dataTableNode in node.SelectNodes("LayoutDataTable")) {
+            foreach(XmlNode dataTableNode in node.SelectNodes("DataTable")) {
                 string dataTableTitle = dataTableNode.SelectSingleNode("@Title").Value;
-                string dataTableXpath = dataTableNode.SelectSingleNode("@XPath").Value;
+				string dataTableXpath = dataTableNode.SelectSingleNode("@RecordXPath").Value;
 
-                List<LayoutValue> values = extractValues(dataTableNode);
+				List<LayoutDataTable.Column> values = extractColumns(dataTableNode);
 
                 dataTables.Add(new LayoutDataTable(dataTableTitle, dataTableXpath, values));
             }
 
             return dataTables;
         }
+
+		private List<LayoutDataTable.Column> extractColumns (XmlNode dataTableNode)
+		{
+			List<LayoutDataTable.Column> cols = new List<LayoutDataTable.Column> ();
+			foreach(XmlNode node in dataTableNode.SelectNodes("Column")) 
+			{
+				string name = node.SelectSingleNode ("@Name").Value;
+				string xpath = node.SelectSingleNode ("@ValueXPath").Value;
+
+				cols.Add (new LayoutDataTable.Column(name, xpath));
+			}
+			return cols;
+		}
 
 		private List<LayoutValue> extractValues (XmlNode node) 
 		{

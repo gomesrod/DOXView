@@ -29,10 +29,11 @@ namespace DOXViewUnitTests
 		{
 			XmlModel model = parser.parseXmlFile("../../../DemoFiles/SampleData.xml");
 
-			Assert.AreEqual (2, model.Nodes.Count);
+			Assert.AreEqual (3, model.Nodes.Count);
 
 			validateCustInfoNode (model.Nodes[0]);
             validateTelecomServicesSummary(model.Nodes[1]);
+			validateCallsNode(model.Nodes[2]);
 		}
 
         private void validateTelecomServicesSummary(XmlModelNode servicesSummaryNode)
@@ -57,7 +58,8 @@ namespace DOXViewUnitTests
             Assert.AreEqual("10.63", charge2.Values[0].Value);
         }
 
-		private void validateCustInfoNode(XmlModelNode custInfoNode) {
+		private void validateCustInfoNode(XmlModelNode custInfoNode) 
+		{
             Assert.AreEqual("Invoice Information", custInfoNode.Description);
             Assert.IsFalse(custInfoNode.IsError);
 
@@ -74,6 +76,55 @@ namespace DOXViewUnitTests
             Assert.AreEqual("Country", country.Description);
             Assert.IsNull(country.Value);
             Assert.IsTrue(country.IsError);
+		}
+
+		private void validateCallsNode(XmlModelNode callsNode)
+		{
+			Assert.AreEqual ("Calls", callsNode.Description);
+			Assert.IsFalse (callsNode.IsError);
+
+			Assert.AreEqual (2, callsNode.DataTables.Count);
+
+			{
+				XmlModelDataTable data1 = callsNode.DataTables [0];
+				Assert.AreEqual ("Local Calls", data1.Title);
+				Assert.AreEqual (3, data1.Records.Count);
+
+				Assert.AreEqual (4, data1.Records [0].Count); // Number of keys in the record
+				Assert.AreEqual ("118171621", data1.Records[0]["Dest Number"]);
+				Assert.AreEqual ("530", data1.Records[0]["Duration"]);
+				Assert.AreEqual ("0.00", data1.Records[0]["Price"]);
+				Assert.AreEqual ("0.00", data1.Records[0]["Tax"]);
+
+				Assert.AreEqual (4, data1.Records [1].Count);
+				Assert.AreEqual ("111231212", data1.Records[1]["Dest Number"]);
+				Assert.AreEqual ("142", data1.Records[1]["Duration"]);
+				Assert.AreEqual ("0.00", data1.Records[1]["Price"]);
+				Assert.AreEqual ("0.06", data1.Records[1]["Tax"]);
+
+				Assert.AreEqual (4, data1.Records [2].Count);
+				Assert.AreEqual ("114123498", data1.Records[2]["Dest Number"]);
+				Assert.AreEqual ("1059", data1.Records[2]["Duration"]);
+				Assert.AreEqual ("0.00", data1.Records[2]["Price"]);
+				Assert.AreEqual ("0.00", data1.Records[2]["Tax"]);
+			}
+			{
+				XmlModelDataTable data2 = callsNode.DataTables [1];
+				Assert.AreEqual ("Long-Distance Calls", data2.Title);
+				Assert.AreEqual (2, data2.Records.Count);
+
+				Assert.AreEqual (4, data2.Records [0].Count);
+				Assert.AreEqual ("3710488371", data2.Records [0] ["Dest Number"]);
+				Assert.AreEqual ("142", data2.Records [0] ["Duration"]);
+				Assert.AreEqual ("4.10", data2.Records [0] ["Price"]);
+				Assert.AreEqual ("0.15", data2.Records [0] ["Tax"]);
+
+				Assert.AreEqual (4, data2.Records [1].Count);
+				Assert.AreEqual ("4122391235", data2.Records [1] ["Dest Number"]);
+				Assert.AreEqual ("201", data2.Records [1] ["Duration"]);
+				Assert.AreEqual ("6.20", data2.Records [1] ["Price"]);
+				Assert.AreEqual ("0.18", data2.Records [1] ["Tax"]);
+			}
 		}
 	}
 }

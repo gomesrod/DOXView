@@ -21,10 +21,10 @@ namespace DOXView.ModelLayout
 "        <Value Description='RootNodeSomeInnerValue' XPath='childTag/another' />           " +
 "    </Node>                                                                             " +
 "    <Node Description='RootNode2' XPath='/node2' Required='False' CustomDescriptionXPath='@SomeRelevantAttribute'> " +
-"        <LayoutDataTable Title='A List Of Values' RecordXPath='repeatingTag'>" +
+"        <DataTable Title='A List Of Values' RecordXPath='repeatingTag'>" +
 "             <Column Name='Column 1' ValueXPath='@column1' />" +
 "             <Column Name='Column 2' ValueXPath='@column2' />" +
-"        </LayoutDataTable>" +
+"        </DataTable>" +
 "    </Node>                                                                             " +
 "</DOXViewLayout>                                                                      ";
 
@@ -105,12 +105,12 @@ namespace DOXView.ModelLayout
             Assert.AreEqual(2, dataTables[0].Columns.Count);
 
             LayoutDataTable.Column dataTableV1 = dataTables[0].Columns[0];
-            Assert.AreEqual("Column 1", dataTableV1.Description);
-            Assert.AreEqual("@column1", dataTableV1.XPath);
+			Assert.AreEqual("Column 1", dataTableV1.Name);
+			Assert.AreEqual("@column1", dataTableV1.ValueXPath);
 
             LayoutDataTable.Column dataTableV2 = dataTables[0].Columns[1];
-            Assert.AreEqual("Column 2", dataTableV2.Description);
-            Assert.AreEqual("@column2", dataTableV2.XPath);
+			Assert.AreEqual("Column 2", dataTableV2.Name);
+			Assert.AreEqual("@column2", dataTableV2.ValueXPath);
         }
     }
 }

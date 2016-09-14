@@ -98,18 +98,35 @@ namespace DOXView.Model
 
             foreach (LayoutDataTable layoutdataTable in layoutDataTables)
             {
-                List<Dictionary<string, string>> records = new List<Dictionary<string, string>>();
-
-                foreach (XmlNode xmlDataTable in xmlNode.SelectNodes(layoutdataTable.RecordXPath))
-                {
-                    Dictionary<string, string> record = new Dictionary<string, string>();
-                }
-
-                XmlModelDataTable dataTable = new XmlModelDataTable(layoutdataTable.Title, records);
+				List<Dictionary<string, string>> records = extractDataTableRecords (xmlNode, layoutdataTable);
+				dataTables.Add(new XmlModelDataTable(layoutdataTable.Title, records));
             }
 
             return dataTables;
         }
+
+		private List<Dictionary<string, string>> extractDataTableRecords (XmlNode xmlNode, LayoutDataTable layoutdataTable)
+		{
+			List<Dictionary<string, string>> records = new List<Dictionary<string, string>> ();
+
+			foreach (XmlNode xmlRecord in xmlNode.SelectNodes (layoutdataTable.RecordXPath)) {
+				Dictionary<string, string> record = new Dictionary<string, string> ();
+
+				foreach (LayoutDataTable.Column layoutColumn in layoutdataTable.Columns)
+				{
+					XmlNode valueNode = xmlRecord.SelectSingleNode (layoutColumn.ValueXPath);
+					if (valueNode == null) {
+						record.Add (layoutColumn.Name, "#ERR#");
+					} else {
+						record.Add (layoutColumn.Name, valueNode.Value ?? valueNode.InnerText);
+					}
+				}
+
+				records.Add (record);
+			}
+
+			return records;
+		}
 
         private static List<XmlModelValue> extractValues(List<LayoutValue> layoutValues, XmlNode xmlNode)
         {

@@ -20,13 +20,13 @@ namespace DOXView.ModelLayout
 
         public class Column
         {
-            public string Description {get; private set;}
-            public string XPath { get; private set; }
+            public string Name {get; private set;}
+			public string ValueXPath { get; private set; }
 
-            public Column(string desc, string path)
+            public Column(string name, string xpath)
             {
-                Description = desc;
-                XPath = path;
+                Name = name;
+				ValueXPath = xpath;
             }
         }
     }
