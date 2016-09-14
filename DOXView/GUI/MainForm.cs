@@ -27,6 +27,11 @@ namespace DOXView.GUI
             fd.ShowDialog(this);
         }
 
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.Close ();
+		}
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             prepareValuesGridView();
@@ -116,7 +121,7 @@ namespace DOXView.GUI
         {
             // Resize component to fit all the rows
             // (with some extra pixels to avoid the scroll bar)
-            int rowsHeight = valuesGridView.Rows.GetRowsHeight(DataGridViewElementStates.None) + 5;
+			int rowsHeight = valuesGridView.Rows.GetRowsHeight(DataGridViewElementStates.Visible) + 5;
 
             Size newSize = new Size(valuesGridView.ClientSize.Width, rowsHeight);
             valuesGridView.ClientSize = newSize;
