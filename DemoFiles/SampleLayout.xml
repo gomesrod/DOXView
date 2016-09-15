@@ -38,10 +38,15 @@
       <Value Description="Amount" XPath="Value" />
     </Node>
   </Node>
-
-  <!-- In the section below we use DataTable elements to display tabular data 
-   -->
+  
   <Node Description="Calls" XPath="/Bill/Calls">
+    <!-- Demonstrating the usage of some XPath functions... -->
+    <Value Description="Total calls" XPath="count(Call)" />
+    <Value Description="Total call amount" XPath="sum(Call/@value)" />
+
+    <!-- In the section below we use DataTable elements to display tabular data 
+      The RecordXPath attribute points to the XML nodeset that generates the rows.
+   -->
   	<DataTable Title="Local Calls" RecordXPath="Call[@type='local']">
   		<Column Name="Dest Number" ValueXPath="@destnumber" />
   		<Column Name="Duration" ValueXPath="@seconds" />

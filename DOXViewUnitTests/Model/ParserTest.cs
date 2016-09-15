@@ -188,7 +188,30 @@ namespace DOXView.Model
             Assert.AreEqual("Name", model.Nodes[0].Values[0].Description);
             Assert.AreEqual("Mike The Art Collector", model.Nodes[0].Values[0].Value);
         }
-        
+
+
+        [Test]
+        public void NodeWithValue_valueIsXPathFunction()
+        {
+            Layout layout = new Layout("Test Layout", "/Library", new List<LayoutNode>());
+            LayoutNode rootNode = new LayoutNode("Disks", "/Library/Disks", true, null,
+                new List<LayoutNode>(), new List<LayoutValue>(), new List<LayoutDataTable>());
+            rootNode.Values.Add(new LayoutValue("CD Count", "count(CD)"));
+            layout.Nodes.Add(rootNode);
+
+            ModelParser parser = new ModelParser(layout);
+            XmlModel model = parser.parseXmlString(XML_INPUT);
+
+            Assert.AreEqual(1, model.Nodes.Count);
+
+            Assert.AreEqual("Disks", model.Nodes[0].Description);
+            Assert.AreEqual(false, model.Nodes[0].IsError);
+
+            Assert.AreEqual(1, model.Nodes[0].Values.Count);
+            Assert.AreEqual("CD Count", model.Nodes[0].Values[0].Description);
+            Assert.AreEqual("2", model.Nodes[0].Values[0].Value);
+        }
+
         [Test]
         public void NodesWithValues_valueIsTagText()
         {

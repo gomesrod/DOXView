@@ -104,6 +104,33 @@ namespace DOXView.GUI
             XmlModelNode modelNode = (XmlModelNode)e.Node.Tag;
             currentValuesList = modelNode.Values;
             valuesGridView.DataSource = currentValuesList;
+
+
+            //////////////////////////////////////////////
+            //////////////////////////////////////////////////
+            if (modelNode.DataTables.Count > 0)
+            {
+                DataGridView dataTableGrid = new DataGridView();
+                this.gridContainerPanel.Controls.Add(dataTableGrid);
+                dataTableGrid.AllowUserToAddRows = false;
+                dataTableGrid.AllowUserToDeleteRows = false;
+                dataTableGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                | System.Windows.Forms.AnchorStyles.Right)));
+                
+                dataTableGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+                dataTableGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+                dataTableGrid.ColumnHeadersVisible = false;
+                //dataTableGrid.Location = new System.Drawing.Point(-2, 100);
+                dataTableGrid.Name = "dataTableGrid";
+                dataTableGrid.ReadOnly = true;
+                dataTableGrid.RowHeadersVisible = false;
+                dataTableGrid.Size = new System.Drawing.Size(496, 67);
+                dataTableGrid.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gridView_resize_on_DataBindingComplete);
+
+                dataTableGrid.DataSource = modelNode.DataTables[0].Records;
+            }
+
+
         }
 
         private void valuesGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -117,14 +144,15 @@ namespace DOXView.GUI
             }
         }
 
-        private void valuesGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        private void gridView_resize_on_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             // Resize component to fit all the rows
             // (with some extra pixels to avoid the scroll bar)
-			int rowsHeight = valuesGridView.Rows.GetRowsHeight(DataGridViewElementStates.Visible) + 5;
+            DataGridView grid = (DataGridView)sender;
+            int rowsHeight = grid.Rows.GetRowsHeight(DataGridViewElementStates.Visible) + 5;
 
             Size newSize = new Size(valuesGridView.ClientSize.Width, rowsHeight);
-            valuesGridView.ClientSize = newSize;
+            grid.ClientSize = newSize;
         }
 
 

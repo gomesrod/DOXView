@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using System.Xml.XPath;
 using DOXView.ModelLayout;
 
 namespace DOXView.Model
@@ -133,16 +134,35 @@ namespace DOXView.Model
             List<XmlModelValue> values = new List<XmlModelValue>();
             foreach (LayoutValue layoutValue in layoutValues)
             {
-                XmlNodeList foundXmlValues = xmlNode.SelectNodes(layoutValue.XPath);
-                foreach (XmlNode xmlValue in foundXmlValues)
+                if (layoutValue.XPath.Contains("("))
                 {
-                    string textValue = xmlValue.Value != null ? xmlValue.Value : xmlValue.InnerText;
-                    values.Add(new XmlModelValue(layoutValue.Description, textValue, false));
+                    // If the xpath expression contains "(" we resolve it as a function...
+                    XPathNavigator navigator = xmlNode.CreateNavigator();
+                    XPathExpression expr = navigator.Compile(layoutValue.XPath);
+                    if (navigator.Evaluate(expr) != null)
+                    {
+                        values.Add(new XmlModelValue(layoutValue.Description, navigator.Evaluate(expr).ToString(), false));
+                    }
+                    else
+                    {
+                        values.Add(new XmlModelValue(layoutValue.Description, "#Null#", true));
+                    }
+
                 }
-                if (foundXmlValues.Count == 0 && layoutValue.Required)
+                else
                 {
-                    values.Add(new XmlModelValue(layoutValue.Description, null, true));
-                }
+                    // Otherwise, resolve it as a regular child nodeset
+                    XmlNodeList foundXmlValues = xmlNode.SelectNodes(layoutValue.XPath);
+                    foreach (XmlNode xmlValue in foundXmlValues)
+                    {
+                        string textValue = xmlValue.Value != null ? xmlValue.Value : xmlValue.InnerText;
+                        values.Add(new XmlModelValue(layoutValue.Description, textValue, false));
+                    }
+                    if (foundXmlValues.Count == 0 && layoutValue.Required)
+                    {
+                        values.Add(new XmlModelValue(layoutValue.Description, null, true));
+                    }
+                }                
             }
             return values;
         }

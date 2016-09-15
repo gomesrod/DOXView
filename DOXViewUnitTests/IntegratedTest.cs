@@ -83,6 +83,11 @@ namespace DOXViewUnitTests
 			Assert.AreEqual ("Calls", callsNode.Description);
 			Assert.IsFalse (callsNode.IsError);
 
+            Assert.AreEqual(2, callsNode.Values.Count);
+            Assert.AreEqual("5", callsNode.Values[0].Value);
+            // The value below depends on regional settings, so we accept both formats
+            Assert.IsTrue("10.3".Equals(callsNode.Values[1].Value) || "10,3".Equals(callsNode.Values[1].Value), "Validate sum() value");
+
 			Assert.AreEqual (2, callsNode.DataTables.Count);
 
 			{
