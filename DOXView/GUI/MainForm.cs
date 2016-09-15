@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DOXView.Model;
 using DOXView.ModelLayout;
+using DOXView.GUI.DictionaryToGridAdapter;
 
 namespace DOXView.GUI
 {
@@ -126,8 +127,9 @@ namespace DOXView.GUI
                 dataTableGrid.RowHeadersVisible = false;
                 dataTableGrid.Size = new System.Drawing.Size(496, 67);
                 dataTableGrid.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gridView_resize_on_DataBindingComplete);
+                dataTableGrid.DataSource = new DictionaryTypedList(modelNode.DataTables[0].Records);
 
-                dataTableGrid.DataSource = modelNode.DataTables[0].Records;
+                
             }
 
 

@@ -59,6 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI\DictionaryToGridAdapter\DictionaryFieldPropertyDescriptor.cs" />
+    <Compile Include="GUI\DictionaryToGridAdapter\DictionaryTypedList.cs" />
     <Compile Include="GUI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
