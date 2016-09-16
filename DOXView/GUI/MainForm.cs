@@ -25,32 +25,38 @@ namespace DOXView.GUI
         private void openXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FileDialog fd = new OpenFileDialog();
+
             fd.ShowDialog(this);
 
-
-            // * * * Temporary * * * 
-            // * * * A file will not be open during startup
-            LayoutParser layoutParser = new LayoutParser();
-
-            // The IDE is supposed to run this program from [DoxViewTests directory]/bin/[Debug|Release]
-            // We go back three levels to find the sample files in the root of the project
-            Layout layout = layoutParser.parseXmlFile("../../../DemoFiles/SampleLayout.xml");
-
-            ModelParser parser = new ModelParser(layout);
-            XmlModel model;
-
-            try
+            if (!string.IsNullOrEmpty(fd.FileName)) 
             {
-                model = parser.parseXmlFile("../../../DemoFiles/SampleData.xml");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, ex.Message + "|" + ex.StackTrace);
-                return;
+
+                // * * * Temporary * * * 
+                // * * * A file will not be open during startup
+                LayoutParser layoutParser = new LayoutParser();
+
+                // The IDE is supposed to run this program from [DoxViewTests directory]/bin/[Debug|Release]
+                // We go back three levels to find the sample files in the root of the project
+                Layout layout = layoutParser.parseXmlFile("C:\\temp\\layout_BPIX.xml");
+
+                ModelParser parser = new ModelParser(layout);
+                XmlModel model;
+
+                try
+                {
+                    model = parser.parseXmlFile(fd.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, ex.Message + "|" + ex.StackTrace);
+                    return;
+                }
+
+                documentTreeView.Nodes.Clear();
+                addXmlNodesToTree(model.Nodes, documentTreeView.Nodes);
+                documentTreeView.SelectedNode = documentTreeView.Nodes[0];
             }
 
-            addXmlNodesToTree(model.Nodes, documentTreeView.Nodes);
-            documentTreeView.SelectedNode = documentTreeView.Nodes[0];
         }
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
