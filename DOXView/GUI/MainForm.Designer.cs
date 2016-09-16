@@ -35,15 +35,15 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
             this.documentTreeView = new System.Windows.Forms.TreeView();
-            this.valuesGridView = new System.Windows.Forms.DataGridView();
             this.gridContainerPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.valuesGridView = new System.Windows.Forms.DataGridView();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
             this.SplitContainer.Panel2.SuspendLayout();
             this.SplitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.valuesGridView)).BeginInit();
             this.gridContainerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.valuesGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -63,25 +63,25 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openXMLToolStripMenuItem
             // 
             this.openXMLToolStripMenuItem.Name = "openXMLToolStripMenuItem";
-            this.openXMLToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.openXMLToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.openXMLToolStripMenuItem.Text = "Open XML...";
             this.openXMLToolStripMenuItem.Click += new System.EventHandler(this.openXMLToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(131, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -117,6 +117,21 @@
             this.documentTreeView.TabIndex = 0;
             this.documentTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.documentTreeView_AfterSelect);
             // 
+            // gridContainerPanel
+            // 
+            this.gridContainerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gridContainerPanel.AutoScroll = true;
+            this.gridContainerPanel.BackColor = System.Drawing.SystemColors.Window;
+            this.gridContainerPanel.Controls.Add(this.valuesGridView);
+            this.gridContainerPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.gridContainerPanel.Location = new System.Drawing.Point(0, 0);
+            this.gridContainerPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.gridContainerPanel.Name = "gridContainerPanel";
+            this.gridContainerPanel.Size = new System.Drawing.Size(492, 436);
+            this.gridContainerPanel.TabIndex = 1;
+            // 
             // valuesGridView
             // 
             this.valuesGridView.AllowUserToAddRows = false;
@@ -132,19 +147,6 @@
             this.valuesGridView.TabIndex = 0;
             this.valuesGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.valuesGridView_CellFormatting);
             this.valuesGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gridView_resize_on_DataBindingComplete);
-            // 
-            // gridContainerPanel
-            // 
-            this.gridContainerPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gridContainerPanel.Controls.Add(this.valuesGridView);
-            this.gridContainerPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.gridContainerPanel.Location = new System.Drawing.Point(0, 0);
-            this.gridContainerPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.gridContainerPanel.Name = "gridContainerPanel";
-            this.gridContainerPanel.Size = new System.Drawing.Size(492, 284);
-            this.gridContainerPanel.TabIndex = 1;
             // 
             // MainForm
             // 
@@ -164,8 +166,8 @@
             this.SplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
             this.SplitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.valuesGridView)).EndInit();
             this.gridContainerPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.valuesGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
