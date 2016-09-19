@@ -10,12 +10,14 @@ using System.Windows.Forms;
 using DOXView.Model;
 using DOXView.ModelLayout;
 using DOXView.GUI.DictionaryToGridAdapter;
+using System.IO;
 
 namespace DOXView.GUI
 {
     public partial class MainForm : Form
     {
         private List<XmlModelValue> currentValuesList;
+        private XMLOpenDialog xmlOpenDialog;
 
         public MainForm()
         {
@@ -24,27 +26,30 @@ namespace DOXView.GUI
         
         private void openXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileDialog fd = new OpenFileDialog();
-
-            fd.ShowDialog(this);
-
-            if (!string.IsNullOrEmpty(fd.FileName)) 
+            if (xmlOpenDialog == null)
             {
-
-                // * * * Temporary * * * 
-                // * * * A file will not be open during startup
-                LayoutParser layoutParser = new LayoutParser();
-
-                // The IDE is supposed to run this program from [DoxViewTests directory]/bin/[Debug|Release]
-                // We go back three levels to find the sample files in the root of the project
-                Layout layout = layoutParser.parseXmlFile("C:\\temp\\layout_BPIX.xml");
-
-                ModelParser parser = new ModelParser(layout);
-                XmlModel model;
+                LayoutManager layoutManager = new LayoutManager();
 
                 try
                 {
-                    model = parser.parseXmlFile(fd.FileName);
+                    layoutManager.LoadLayouts();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error loading layouts", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                xmlOpenDialog = new XMLOpenDialog(layoutManager);
+            }
+
+            if (xmlOpenDialog.ShowDialog() == DialogResult.OK)
+            {
+                ModelParser parser = new ModelParser(xmlOpenDialog.SelectedLayout);
+                XmlModel model;
+                try
+                {
+                    model = parser.parseXmlFile(xmlOpenDialog.SelectedXmlPath);
                 }
                 catch (Exception ex)
                 {
@@ -56,7 +61,6 @@ namespace DOXView.GUI
                 addXmlNodesToTree(model.Nodes, documentTreeView.Nodes);
                 documentTreeView.SelectedNode = documentTreeView.Nodes[0];
             }
-
         }
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
