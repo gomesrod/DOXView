@@ -18,10 +18,16 @@ namespace DOXView.GUI
     {
         private List<XmlModelValue> currentValuesList;
         private XMLOpenDialog xmlOpenDialog;
+        private XmlModel preloadedModel = null;
 
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        public MainForm(XmlModel preloadedModel_) : this()
+        {
+            preloadedModel = preloadedModel_;
         }
         
         private void openXMLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -71,6 +77,12 @@ namespace DOXView.GUI
         private void MainForm_Load(object sender, EventArgs e)
         {
             prepareValuesGridView();
+
+            if (preloadedModel != null) {
+                documentTreeView.Nodes.Clear();
+                addXmlNodesToTree(preloadedModel.Nodes, documentTreeView.Nodes);
+                documentTreeView.SelectedNode = documentTreeView.Nodes[0];
+            }            
         }
 
         private void prepareValuesGridView()
@@ -104,10 +116,17 @@ namespace DOXView.GUI
             foreach (XmlModelNode modelNode in modelNodes)
             {
                 TreeNode treeNode = new TreeNode(modelNode.Description);
-                treeNode.Tag = modelNode;               
+                treeNode.Tag = modelNode;
 
-                // Proceed adding child nodes
-                addXmlNodesToTree(modelNode.ChildNodes, treeNode.Nodes);
+                if (modelNode.IsError)
+                {
+                    treeNode.BackColor = Color.Red;
+                }
+                else
+                {
+                    // Proceed adding child nodes
+                    addXmlNodesToTree(modelNode.ChildNodes, treeNode.Nodes);
+                }                
 
                 treeNodeCollection.Add(treeNode);
             }
@@ -116,6 +135,22 @@ namespace DOXView.GUI
         private void documentTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             XmlModelNode modelNode = (XmlModelNode)e.Node.Tag;
+
+            if (modelNode.IsError)
+            {
+                // This node has error. Just clean the right panel
+                valuesGridView.Visible = false;
+                foreach (Control ctl in this.gridContainerPanel.Controls)
+                {
+                    if (ctl.Name.StartsWith("dataTableLabel_") || ctl.Name.StartsWith("dataTableGrid_"))
+                    {
+                        this.gridContainerPanel.Controls.Remove(ctl);
+                    }
+                }
+                this.gridContainerPanel.Refresh();
+                return;
+            }
+
             currentValuesList = modelNode.Values;
             if (currentValuesList.Count > 0)
             {
@@ -140,6 +175,7 @@ namespace DOXView.GUI
                     this.gridContainerPanel.Controls.Remove(ctl);
                 }
             }
+            this.gridContainerPanel.Refresh();
 
             int index = 0;
             foreach (XmlModelDataTable dataTable in dataTables)
