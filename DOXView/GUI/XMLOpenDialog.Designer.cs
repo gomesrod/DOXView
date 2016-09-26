@@ -32,6 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnXmlBrowse = new System.Windows.Forms.Button();
+            this.btnLayoutHelp = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.cboLayouts = new System.Windows.Forms.ComboBox();
@@ -76,6 +77,17 @@
             this.btnXmlBrowse.UseVisualStyleBackColor = true;
             this.btnXmlBrowse.Click += new System.EventHandler(this.btnXmlBrowse_Click);
             // 
+            // btnLayoutHelp
+            // 
+            this.btnLayoutHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLayoutHelp.Location = new System.Drawing.Point(500, 35);
+            this.btnLayoutHelp.Name = "btnLayoutHelp";
+            this.btnLayoutHelp.Size = new System.Drawing.Size(15, 20);
+            this.btnLayoutHelp.TabIndex = 1;
+            this.btnLayoutHelp.Text = "?";
+            this.btnLayoutHelp.UseVisualStyleBackColor = true;
+            this.btnLayoutHelp.Click += new System.EventHandler(this.btnLayoutHelp_Click);
+            // 
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -99,6 +111,7 @@
             // 
             // cboLayouts
             // 
+            this.cboLayouts.DisplayMember = "Description";
             this.cboLayouts.Enabled = false;
             this.cboLayouts.FormattingEnabled = true;
             this.cboLayouts.Location = new System.Drawing.Point(63, 35);
@@ -132,6 +145,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnXmlBrowse);
+            this.Controls.Add(this.btnLayoutHelp);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtXmlPath);
@@ -152,6 +166,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnXmlBrowse;
+		private System.Windows.Forms.Button btnLayoutHelp;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ComboBox cboLayouts;

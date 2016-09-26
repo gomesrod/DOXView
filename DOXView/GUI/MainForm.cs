@@ -23,30 +23,21 @@ namespace DOXView.GUI
         public MainForm()
         {
             InitializeComponent();
+            xmlOpenDialog = new XMLOpenDialog();
         }
 
-        public MainForm(XmlModel preloadedModel_) : this()
+        public MainForm(XmlModel preloadedModel_, string defaultXml, Layout defaultLayout)
         {
+            InitializeComponent();
             preloadedModel = preloadedModel_;
+            xmlOpenDialog = new XMLOpenDialog(defaultXml, defaultLayout);
         }
-        
+                
         private void openXMLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (xmlOpenDialog == null)
+            if (xmlOpenDialog.LayoutManager == null)
             {
-                LayoutManager layoutManager = new LayoutManager();
-
-                try
-                {
-                    layoutManager.LoadLayouts();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error loading layouts", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                xmlOpenDialog = new XMLOpenDialog(layoutManager);
+                xmlOpenDialog.LoadLayouts();
             }
 
             if (xmlOpenDialog.ShowDialog() == DialogResult.OK)
@@ -76,8 +67,6 @@ namespace DOXView.GUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            prepareValuesGridView();
-
             if (preloadedModel != null) {
                 documentTreeView.Nodes.Clear();
                 addXmlNodesToTree(preloadedModel.Nodes, documentTreeView.Nodes);
@@ -85,8 +74,9 @@ namespace DOXView.GUI
             }            
         }
 
-        private void prepareValuesGridView()
+        private DataGridView prepareValuesGridView()
         {
+            DataGridView valueGridView = new DataGridView();
 
             //create the column programatically
             DataGridViewCell defaultValueCell = new DataGridViewTextBoxCell();
@@ -106,9 +96,29 @@ namespace DOXView.GUI
                 DataPropertyName = "Value" // Tell the column which property of FileName it should use
             };
 
-            valuesGridView.AutoGenerateColumns = false;
-            valuesGridView.Columns.Add(colDescription);
-            valuesGridView.Columns.Add(colValue);
+            valueGridView.AllowUserToAddRows = false;
+            valueGridView.AllowUserToDeleteRows = false;
+            valueGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            valueGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            valueGridView.ColumnHeadersVisible = false;
+            valueGridView.Location = new System.Drawing.Point(3, 3);
+            valueGridView.Name = "valueGridView";
+            valueGridView.ReadOnly = true;
+            valueGridView.RowHeadersVisible = false;
+            valueGridView.Size = new System.Drawing.Size(486, 67);
+            valueGridView.TabIndex = 0;
+            valueGridView.BorderStyle = BorderStyle.None;
+            valueGridView.BackgroundColor = Color.FromKnownColor(KnownColor.Window);
+            valueGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.valuesGridView_CellFormatting);
+            valueGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gridView_resize_on_DataBindingComplete);
+            
+            valueGridView.AutoGenerateColumns = false;
+            valueGridView.Columns.Add(colDescription);
+            valueGridView.Columns.Add(colValue);
+
+            this.gridContainerPanel.Controls.Add(valueGridView);
+
+            return valueGridView;
         }
 
         private void addXmlNodesToTree(IList<XmlModelNode> modelNodes, TreeNodeCollection treeNodeCollection)
@@ -136,33 +146,20 @@ namespace DOXView.GUI
         {
             XmlModelNode modelNode = (XmlModelNode)e.Node.Tag;
 
-            if (modelNode.IsError)
-            {
-                // This node has error. Just clean the right panel
-                valuesGridView.Visible = false;
-                foreach (Control ctl in this.gridContainerPanel.Controls)
+            this.gridContainerPanel.Controls.Clear();
+            
+            if (!modelNode.IsError)
+            {                
+                currentValuesList = modelNode.Values;
+                if (currentValuesList.Count > 0)
                 {
-                    if (ctl.Name.StartsWith("dataTableLabel_") || ctl.Name.StartsWith("dataTableGrid_"))
-                    {
-                        this.gridContainerPanel.Controls.Remove(ctl);
-                    }
-                }
-                this.gridContainerPanel.Refresh();
-                return;
-            }
+                    DataGridView valuesGridView = prepareValuesGridView();
+                    valuesGridView.Visible = true;
+                    valuesGridView.DataSource = currentValuesList;
+                }                
 
-            currentValuesList = modelNode.Values;
-            if (currentValuesList.Count > 0)
-            {
-                valuesGridView.Visible = true;
-                valuesGridView.DataSource = currentValuesList;
+                createGridForDataTables(modelNode.DataTables);
             }
-            else
-            {
-                valuesGridView.Visible = false;
-            }            
-
-            createGridForDataTables(modelNode.DataTables);
         }
 
         private void createGridForDataTables(List<XmlModelDataTable> dataTables)
@@ -182,7 +179,9 @@ namespace DOXView.GUI
             {
                 Label titleLabel = new Label();
                 titleLabel.Name = "dataTableLabel_" + index;
-                titleLabel.Text = dataTable.Title;
+                titleLabel.Text = dataTable.Title;                
+                titleLabel.Margin = new Padding (0, 10, 0, 0);
+                titleLabel.Font = new Font(titleLabel.Font.FontFamily, titleLabel.Font.Size + 2);
                 this.gridContainerPanel.Controls.Add(titleLabel);
 
                 DataGridView dataTableGrid = new DataGridView();
@@ -206,12 +205,7 @@ namespace DOXView.GUI
                 index++;
             }         
         }
-
-        private void cleanupDatatableGrids()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         private void valuesGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (currentValuesList == null) return;

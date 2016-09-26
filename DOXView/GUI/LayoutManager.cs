@@ -14,17 +14,22 @@ namespace DOXView.GUI
 
         public void LoadLayouts()
         {
-            List<Layout> layouts = loadLayoutsFromDir(getLayoutDir());            
+			List<Layout> layouts = new List<Layout>();
 
-            if (layouts.Count == 0)
-            {
-                throw new InvalidOperationException("No layout was found");
-            }
+			foreach (string ldir in getLayoutDirs()) {
+				if (Directory.Exists(ldir)) {
+					layouts.AddRange (loadLayoutsFromDir(ldir));
+				}
+			}
 
             availableLayouts = layouts;
         }
 
-        private string getLayoutDir()
+		// Return the suitable layout dirs.
+		// Currently this set is made of:
+		// - a global layout directory (application dir / layouts)
+		// - a personal layout directory, if one exists (user home / .DOXView / layouts)
+        public string[] getLayoutDirs()
         {
             string homeDir;
             if (Environment.OSVersion.Platform.ToString().StartsWith("Win")) {
@@ -41,23 +46,18 @@ namespace DOXView.GUI
             
             if (string.IsNullOrEmpty(homeDir))
             {
-                // If after all a home dir is not defined,
-                // the compiled application uses the path "[app dir]/layouts" 
-                return Path.Combine(Application.StartupPath, "layouts");
+				// If a home dir cannot be discovered, return only the global location
+				return new string[]{Path.Combine(Application.StartupPath, "layouts")};
             }
             else
             {
-                return Path.Combine(homeDir, ".DOXView", "layouts");
+				return new string[]{Path.Combine(homeDir, ".DOXView", "layouts"), 
+					Path.Combine(Application.StartupPath, "layouts")};
             }
         }
 
         private List<Layout> loadLayoutsFromDir(string dir)
         {
-            if (!Directory.Exists(dir))
-            {
-                throw new ArgumentException("Directory does not exist: " + dir);
-            }
-
             LayoutParser parser = new LayoutParser();
             List<Layout> result = new List<Layout>();
 
@@ -70,7 +70,7 @@ namespace DOXView.GUI
             return result;
         }
 
-        internal List<Layout> listCompatibleLayouts(TextBox txtXmlPath)
+        internal List<Layout> listCompatibleLayouts(string txtXmlPath)
         {
             // TODO - Filter based on the EvaluationXPath, returning only
             // the layouts that match this XML

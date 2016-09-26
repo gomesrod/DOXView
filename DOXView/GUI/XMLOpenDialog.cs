@@ -17,14 +17,39 @@ namespace DOXView.GUI
         public Layout SelectedLayout { get; private set; }
 
         private LayoutManager layoutManager;
+        private OpenFileDialog xmlOpenDialog = new OpenFileDialog();
 
-        public XMLOpenDialog(LayoutManager lm)
+        public XMLOpenDialog()
         {
             InitializeComponent();
-            layoutManager = lm;
         }
 
+        public XMLOpenDialog(string defaultXml, Layout defaultLayout)
+        {
+            InitializeComponent();
+            txtXmlPath.Text = Path.GetFullPath(defaultXml);
+            xmlOpenDialog.InitialDirectory = Directory.GetParent(defaultXml).FullName;
+            cboLayouts.Items.Add(defaultLayout);
+            cboLayouts.SelectedItem = defaultLayout;
+        }
 
+        public void LoadLayouts() {
+            layoutManager = new LayoutManager();
+
+            try
+            {
+                layoutManager.LoadLayouts();
+            }
+            catch (Exception ex)
+            {
+                //TODO Improve this error handling
+                MessageBox.Show(ex.Message, "Error loading layouts", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public LayoutManager LayoutManager { 
+            get { return layoutManager; } 
+        }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
@@ -65,15 +90,23 @@ namespace DOXView.GUI
         {
             labelError.Visible = false;
 
-            OpenFileDialog fd = new OpenFileDialog();
-            fd.CheckFileExists = true;
-            if (fd.ShowDialog() == DialogResult.OK)
+            xmlOpenDialog.CheckFileExists = true;
+            if (xmlOpenDialog.ShowDialog() == DialogResult.OK)
             {
-                txtXmlPath.Text = fd.FileName;
+                txtXmlPath.Text = xmlOpenDialog.FileName;
                 validateXmlPath();                
             }
 
         }
+
+		private void btnLayoutHelp_Click(object sender, EventArgs e)
+		{
+			string msg = "Layout files can be read from the following locations:\n";
+			foreach (string dir in layoutManager.getLayoutDirs()) {
+				msg = msg + "-> " + dir + "\n";
+			}
+			MessageBox.Show (this, msg);
+		}
 
         private void txtXmlPath_Enter(object sender, EventArgs e)
         {
@@ -92,7 +125,7 @@ namespace DOXView.GUI
 
         private void validateXmlPath()
         {
-            List<Layout> layouts = layoutManager.listCompatibleLayouts(txtXmlPath);
+            List<Layout> layouts = layoutManager.listCompatibleLayouts(txtXmlPath.Text);
 
             Layout previouslySelected = cboLayouts.SelectedIndex >= 0 ? (Layout)cboLayouts.SelectedItem : null;
             Boolean reselectPrevious = false;
@@ -109,7 +142,6 @@ namespace DOXView.GUI
                     }
                 }
                               
-                cboLayouts.DisplayMember = "Description";
                 cboLayouts.Text = "Select the layout:";
 
                 if (reselectPrevious) {
