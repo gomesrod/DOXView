@@ -1,4 +1,4 @@
-# DOXView
+# XmLift
 Domain-Oriented-XML Viewer
 
 - Under construction

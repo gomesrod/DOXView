@@ -2,7 +2,7 @@
 	A sample Domain-Oriented-XML layout.
 	It presents a friendly view of the XML file SampleData.xml
  -->
-<DOXViewLayout>
+<XmLiftLayout>
 	<!-- This layout's description -->
 	<LayoutDescription>Sample Telecom Bill</LayoutDescription>
 
@@ -60,4 +60,4 @@
   		<Column Name="Tax" ValueXPath="./Tax" />
   	</DataTable>
   </Node>
-</DOXViewLayout>
+</XmLiftLayout>

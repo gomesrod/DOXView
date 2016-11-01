@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace XmLift.Model
+{
+    public class XmlModel
+    {
+        private IList<XmlModelNode> nodes;
+
+        internal XmlModel(IList<XmlModelNode> modelNodes)
+        {
+            nodes = modelNodes;
+        }
+
+        public IList<XmlModelNode> Nodes
+        {
+            get
+            {
+                return nodes;
+            }
+        }
+    }
+}
